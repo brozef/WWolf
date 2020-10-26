@@ -186,7 +186,8 @@ function handleCandidateFromPC2 (iceCandidate) {
 
 /* THE ANSWERER/RECEIVER */
 
-var pc2 = new RTCPeerConnection(cfg, con), dc2 = null;
+var pc2 = new RTCPeerConnection(cfg, con);
+var dc2 = null;
 var pc2icedone = false;
 
 pc2.ondatachannel = function (e) {
