@@ -26,6 +26,19 @@ footer {
     padding: 5px;
 }
 
+.theme-icon {
+    background-image: var(--theme-icon);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 35px;
+    height: 35px;
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+}
+
 .btn {
     box-sizing: border-box;
     cursor: pointer;

@@ -1,4 +1,7 @@
 :root {
+    --theme-icon: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='rgb(240, 240, 240)' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M14.53 10.53a7 7 0 0 1-9.058-9.058A7.003 7.003 0 0 0 8 15a7.002 7.002 0 0 0 6.53-4.47z'/></svg>");
+    --theme-icon-color: white;
+    
     --bgcolor: rgb(36, 36, 36);
 
     --font-color: rgb(132, 224, 255);

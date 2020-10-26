@@ -2,7 +2,7 @@ var deviceTheme = localStorage.getItem('deviceTheme');
 var currentTheme = localStorage.getItem('savedTheme');
 var isCustomTheme = currentTheme != null;
 
-function changeTheme(themeId, save = false, isDevice = false) {
+function changeTheme(themeId, isDevice = false) {
     if (isDevice) {
         deviceTheme = themeId;
         window.localStorage.setItem('deviceTheme', themeId);
@@ -36,9 +36,14 @@ function changeTheme(themeId, save = false, isDevice = false) {
     currentTheme = themeId;
 
     // save to local storage
-    if (save) {
-        window.localStorage.setItem('savedTheme', currentTheme);
-        isCustomTheme = true;
+    if (!isDevice) {
+       if (currentTheme == deviceTheme) {
+            window.localStorage.removeItem('savedTheme');
+            isCustomTheme = false;
+       } else {
+            window.localStorage.setItem('savedTheme', currentTheme);
+            isCustomTheme = true;
+       }
     }
 }
 
@@ -59,16 +64,16 @@ if (currentTheme){
 
 // device theme current setting
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    changeTheme('dark', false, true);
+    changeTheme('dark', true);
 } else {
-    changeTheme('light', false, true);
+    changeTheme('light', true);
 }
 
 // device theme change listeners
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     if (e.matches) {
-        changeTheme('dark', false, true);
+        changeTheme('dark', true);
     } else {
-        changeTheme('light', false, true);
+        changeTheme('light', true);
     }
 });
