@@ -1,5 +1,10 @@
-var cfg = {'iceServers': [{'url': 'stun:23.21.150.121'}]},
-  con = { 'optional': [{'DtlsSrtpKeyAgreement': true}] }
+var cfg = {
+    'iceServers': [{'url': 'stun:23.21.150.121'}]
+};
+
+var con = { 
+    'optional': [{'DtlsSrtpKeyAgreement': true}] 
+};
 
 /* THE CALLER/SENDER */
 
