@@ -20,12 +20,15 @@
         <link href="main.css" rel='stylesheet' type='text/css'>
     </head>
     <body>
+        <header>
+            
+        </header>
         <main class="start-menu">
             <div class="logo">
                 <h1>WWOLF</h1>
                 <h2>tagline</h2>
             </div>
-            <div><button class="btn" onclick="changeTheme('dark')">create game</button></div>
+            <div><button class="btn" onclick="changeTheme(currentTheme == 'dark' ? 'light' : 'dark')">create game</button></div>
             <div class="separator"></div>
             <div><button class="btn link">how to play</button></div>
         </main>
