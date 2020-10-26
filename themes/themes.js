@@ -1,7 +1,12 @@
 var deviceTheme = localStorage.getItem('deviceTheme');
 var currentTheme = localStorage.getItem('savedTheme');
+var isCustomTheme = currentTheme != null;
 
 function changeTheme(themeId, save = false, isDevice = false) {
+    if (isDevice && isCustomTheme) {
+        return;
+    }
+
     // disable the current theme
     var oldNode = document.getElementById(currentTheme);
     if (oldNode) {
@@ -33,6 +38,7 @@ function changeTheme(themeId, save = false, isDevice = false) {
     // save to local storage
     if (save) {
         window.localStorage.setItem('savedTheme', currentTheme);
+        isCustomTheme = true;
     }
 }
 
@@ -40,6 +46,7 @@ function clearTheme()
 {
     //revert to device theme
     window.localStorage.removeItem('savedTheme');
+    isCustomTheme = false;
     changeTheme(deviceTheme);
 }
 
