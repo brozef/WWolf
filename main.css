@@ -1,6 +1,7 @@
 html {
     height: 100%;
     font-family: Raleway, sans-serif;
+    text-shadow: 0px 1px var(--font-shadow-color);
 }
 
 body {
@@ -49,11 +50,17 @@ footer {
     min-height: 40px;
     background-color: var(--primary-color); /*blue*/ /*trans*/
     color: var(--primary-alt-color); /*blue*/ /*white*/
+    text-shadow: inherit;
     font-family: inherit;
     text-transform:uppercase;
     font-weight: 800;
     transition: 0.15s;
     outline: none;
+}
+
+.btn.small {
+    min-width: 40px;
+    min-height: 40px;
 }
 
 .btn:hover {
@@ -69,9 +76,21 @@ footer {
     font-weight: 600;
     color: var(--link-color);
 }
+
 .btn.link:hover {
     opacity: 100%;
     color: var(--link-inverse-color); /* blue */ /* blue */
+}
+
+nav {
+    border-bottom: 1px var(--font-color) dotted;
+    margin: 0 10px;
+}
+
+nav .back {
+    position: absolute;
+    left: 10px;
+    top: 10px;
 }
 
 .start-menu {
@@ -115,4 +134,12 @@ footer {
     padding: 0;
     font-size: 11px;
     font-weight: 400;
+}
+
+.categories {
+    text-align: center;
+}
+
+.categories h1 {
+    font-size: 20px;
 }
