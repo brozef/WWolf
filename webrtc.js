@@ -192,7 +192,7 @@ pc2.ondatachannel = function (e) {
     activedc = dc2;
     dc2.onopen = function (e) {
         console.log('data channel connect');
-    }
+    };
 
     dc2.onmessage = function (e) {
         console.log('Got message (pc2)', e.data);
@@ -206,7 +206,7 @@ pc2.ondatachannel = function (e) {
                 //writeToChatLog(data.message, 'text-info')
             }
         }
-    }
+    };
 }
 
 function handleOfferFromPC1 (offerDesc) {
@@ -215,8 +215,9 @@ function handleOfferFromPC1 (offerDesc) {
         writeToChatLog('Created local answer', 'text-success');
         console.log('Created local answer: ', answerDesc);
         pc2.setLocalDescription(answerDesc);
-    },
-    function () { console.warn("Couldn't create offer") }, sdpConstraints);
+    }, function () { 
+        console.warn("Couldn't create offer");
+    }, sdpConstraints);
 }
 
 pc2.onicecandidate = function (e) {
