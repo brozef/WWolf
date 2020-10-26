@@ -1,0 +1,104 @@
+html {
+    height: 100%;
+    font-family: Raleway, sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--bgcolor);
+    color:var(--font-color);
+}
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+}
+
+footer {
+    text-align: center;
+    font-size: 10px;
+    padding: 5px;
+}
+
+.btn {
+    box-sizing: border-box;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid  var(--primary-inverse-color); /*trans*/ /*blue*/
+    padding: 15px;
+    min-width: 300px;
+    min-height: 40px;
+    background-color: var(--primary-color); /*blue*/ /*trans*/
+    color: var(--primary-alt-color); /*blue*/ /*white*/
+    font-family: inherit;
+    text-transform:uppercase;
+    font-weight: 800;
+    transition: 0.15s;
+    outline: none;
+}
+
+.btn:hover {
+    background-color: var(--primary-inverse-color); /*trans*/ /*blue*/
+    color: var(--primary-highlight-color); /*blue*/ /*white*/
+    border: 1px solid var(--primary-color); /*blue*/ /*trans*/
+}
+
+.btn.link {
+    padding: 5px;
+    background: none;
+    border: none;
+    font-weight: 600;
+    color: var(--link-color);
+}
+.btn.link:hover {
+    opacity: 100%;
+    color: var(--link-inverse-color); /* blue */ /* blue */
+}
+
+.start-menu {
+    width: unset;
+    margin: 0 auto 50px auto;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+}
+
+.start-menu .separator {
+    border-top: 1px var(--font-color) dotted;
+    height: 1px;
+    box-sizing: border-box;
+    margin: 20px 0;
+}
+
+.start-menu div {
+    flex-shrink: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.start-menu .logo {
+    flex-grow: 1;
+    max-height: 50%;
+    margin: 50px 0;                
+    position: relative;
+}
+
+.start-menu .logo h1 {
+    font-size: 50px;
+    margin-bottom: 5px;
+}
+
+.start-menu .logo h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 11px;
+    font-weight: 400;
+}
