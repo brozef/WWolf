@@ -1,0 +1,14 @@
+:root {
+    --bgcolor: white;
+
+    --font-color: black;
+    --link-color: rgb(92, 92, 92);
+    --link-inverse-color:rgb(132, 224, 255);
+
+    --primary-color:rgb(132, 224, 255);
+    --primary-inverse-color: transparent;
+
+    --primary-alt-color:white;
+
+    --primary-highlight-color:rgb(132, 224, 255);
+}
