@@ -157,8 +157,8 @@ nav .back {
 }
 
 .categories .topic-list li {
-    width: calc(calc(100vw / 3) - 20px);
-    height: calc(calc(100vw / 3) - 20px);
+    width: calc(calc(100vw / 3) - 22px);
+    height: calc(calc(100vw / 3) - 22px);
     max-width: 150px;
     max-height: 150px;
     margin: 10px;
