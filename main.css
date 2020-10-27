@@ -93,7 +93,7 @@ nav .back {
     top: 10px;
 }
 
-.start-menu {
+.start-menu main {
     width: unset;
     margin: 0 auto 50px auto;
     flex-direction: column;
@@ -101,14 +101,14 @@ nav .back {
     display: flex;
 }
 
-.start-menu .separator {
+.start-menu main .separator {
     border-top: 1px var(--font-color) dotted;
     height: 1px;
     box-sizing: border-box;
     margin: 20px 0;
 }
 
-.start-menu div {
+.start-menu main div {
     flex-shrink: 1;
     display: flex;
     flex-direction: column;
@@ -117,19 +117,19 @@ nav .back {
     width: 100%;
 }
 
-.start-menu .logo {
+.start-menu main .logo {
     flex-grow: 1;
     max-height: 50%;
     margin: 50px 0;                
     position: relative;
 }
 
-.start-menu .logo h1 {
+.start-menu main .logo h1 {
     font-size: 50px;
     margin-bottom: 5px;
 }
 
-.start-menu .logo h2 {
+.start-menu main .logo h2 {
     margin: 0;
     padding: 0;
     font-size: 11px;
@@ -142,4 +142,12 @@ nav .back {
 
 .categories h1 {
     font-size: 20px;
+}
+
+.lobby main {
+    width: unset;
+    margin: 50px auto 50px auto;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
 }
