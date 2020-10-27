@@ -157,8 +157,10 @@ nav .back {
 }
 
 .categories .topic-list li {
-    width: 130px;
-    height: 130px;
+    width: calc(calc(100vw / 3) - 20px);
+    height: calc(calc(100vw / 3) - 20px);
+    max-width: 150px;
+    max-height: 150px;
     margin: 10px;
     border-radius: 5px;
     border: 1px solid var(--font-color);
