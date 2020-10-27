@@ -163,6 +163,7 @@ nav .back {
     border: 1px solid var(--font-color);
     padding: 0;
     list-style: none;
+    display: inline-block;
 }
 
 .lobby main {
