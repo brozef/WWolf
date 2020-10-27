@@ -19,6 +19,7 @@ main {
     flex: 1;
     width: 100%;
     max-width: 1000px;
+    margin: auto;
 }
 
 footer {
@@ -142,6 +143,26 @@ nav .back {
 
 .categories h1 {
     font-size: 20px;
+}
+
+.categories .topic-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.categories .topic-list li {
+    width: 130px;
+    height: 130px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid var(--font-color);
+    padding: 0;
+    list-style: none;
 }
 
 .lobby main {
