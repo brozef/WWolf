@@ -150,6 +150,12 @@ section.calltoaction {
     width: 100%;
 }
 
+.logo h1 {
+    font-family: 'Fredoka One';
+    -webkit-text-stroke: 2px var(--font-color);
+    -webkit-text-fill-color: var(--bgcolor);
+}
+
 .start-menu main .logo {
     flex-grow: 1;
     max-height: 50%;
