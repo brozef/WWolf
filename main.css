@@ -19,6 +19,10 @@ h2 {
     font-size: 18px;
 }
 
+header {
+    min-height: 60px;
+}
+
 main {
     flex: 1;
     width: 100%;
@@ -30,11 +34,15 @@ footer {
     text-align: center;
     font-size: 10px;
     padding: 5px;
+    margin-top: 10px;
 }
 
 nav {
     border-bottom: 1px var(--font-color) dotted;
-    margin: 0 10px;
+    position: fixed;
+    left: 10px;
+    right: 10px;
+    background-color: var(--bgcolor);
 }
 
 nav h1 {
@@ -42,9 +50,15 @@ nav h1 {
     text-align: center;
 }
 
-nav .back {
+nav .nav-left {
     position: absolute;
     left: 10px;
+    top: 10px;
+}
+
+nav .nav-right {
+    position: absolute;
+    right: 10px;
     top: 10px;
 }
 
@@ -115,7 +129,7 @@ section {
     display: flex;
 }
 
-.start-menu main .separator {
+.separator {
     border-top: 1px var(--font-color) dotted;
     height: 1px;
     box-sizing: border-box;
