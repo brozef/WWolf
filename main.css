@@ -19,6 +19,10 @@ h2 {
     font-size: 18px;
 }
 
+input:focus, button:focus, select:focus {
+    outline: none;
+}
+
 header {
     min-height: 60px;
 }
@@ -99,7 +103,6 @@ section.calltoaction {
     text-transform:uppercase;
     font-weight: 800;
     transition: 0.15s;
-    outline: none;
 }
 
 .btn.small {

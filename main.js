@@ -1,10 +1,8 @@
-var routes = {
-    home: 'index.html',
-    categories: 'categories.html',
-    howto: 'howto.html'
-};
 
-var state = {
+// -----------------------------------------------------------
+// STATE
+
+let state = {
     router: {
         current: null,
         history: []
@@ -13,7 +11,7 @@ var state = {
 };
 
 function load_state() {
-    var savedState = window.sessionStorage.getItem('state');
+    const savedState = window.sessionStorage.getItem('state');
     if (savedState) {
         state = JSON.parse(savedState);
     }
@@ -23,12 +21,20 @@ function save_state() {
     window.sessionStorage.setItem('state', JSON.stringify(state));
 }
 
+// -----------------------------------------------------------
 // GAME
 
 
+// -----------------------------------------------------------
+// PAGE NAVIGATION
 
-// PAGE ROUTING
-function internal_change_route(route) {
+const routes = {
+    home: 'index.html',
+    categories: 'categories.html',
+    howto: 'howto.html'
+};
+
+function change_route(route) {
     if (routes[route]) {
         if (route == routes.home) {
             state.router.history = [];
@@ -40,8 +46,8 @@ function internal_change_route(route) {
     }
 }
 
-function Routing_back() {
-    var back = state.router.history.pop();
+function NavigateBack() {
+    let back = state.router.history.pop();
 
     while(back != null && document.location.href.indexOf(routes[back]) > -1) {
         back = state.router.history.pop();
@@ -52,14 +58,18 @@ function Routing_back() {
     }
 
     state.router.current = back;
-    internal_change_route(back);
+    change_route(back);
 }
 
-function Routing_go(route) {
+function Navigate(route) {
+    if (route == 'back') {
+        return NavigateBack();
+    }
+
     if (routes[route]) {
         state.router.history.push(state.router.current);
         state.router.current = route;
-        internal_change_route(route);
+        change_route(route);
     } else {
         console.error("attempted route does not exist", route);
     }
