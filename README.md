@@ -1,3 +1,3 @@
 # WWolf
 
-https://brozef.github.io/WWolf/
+https://brozef.github.io/wwolf/
