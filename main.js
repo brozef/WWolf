@@ -106,7 +106,7 @@ function FillTopicList() {
             topicCheckbox.onchange = (e) => { 
                 e.target.checked ? SelectTopic(key) : SelectTopic(key, true);  
             };
-            
+
             topicLabel.htmlFor = key;
             topicLabel.innerText = key;
 
@@ -128,7 +128,8 @@ function FillTopicList() {
 const routes = {
     home: 'index.html',
     categories: 'categories.html',
-    howto: 'howto.html'
+    howto: 'howto.html',
+    setup: 'setup.html'
 };
 
 function change_route(route) {
