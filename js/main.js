@@ -119,8 +119,9 @@ function FillTopicList() {
 
 //---- Options
 
-//---- Lobby
+//---- Setup
 
+//---- Debrief
 
 // -----------------------------------------------------------
 // PAGE NAVIGATION
