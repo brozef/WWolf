@@ -38,30 +38,44 @@ const topics = {
 
 let selectedTopics = [];
 
-function SelectTopic(topic) {
+function SelectTopic(topic, deselect = false) {
+    const index = selectedTopics.indexOf(topic);
 
+    let topicCheckbox = document.getElementById(topic);
+    if (index < 0 && !deselect) {
+        selectedTopics.push(topic);
+        if (topicCheckbox) {
+            topicCheckbox.checked = true;
+        }
+    } else if (index > -1 && deselect) {
+        selectedTopics.splice(index, 1);
+        if (topicCheckbox) {
+            topicCheckbox.checked = false;
+        }
+    }
+    
+    if (selectedTopics.length == 0) {
+        document.getElementById('next-top').style.display = 'none';
+        document.getElementById('next-bottom').style.display = 'none';
+    } else {
+        document.getElementById('next-top').style.display = '';
+        document.getElementById('next-bottom').style.display = '';
+    }
 }
 
 function SelectAllTopics() {
     selectedTopics = [];
     Object.keys(topics).forEach(key => {
-        selectedTopics.push(key);
-        let topicCheckbox = document.getElementById(key);
-        if (topicCheckbox) {
-            topicCheckbox.checked = true;
-        }
+        SelectTopic(key);        
     });
 }
 
 
 function DeselectAllTopics() {
-    selectedTopics = [];
     Object.keys(topics).forEach(key => {
-        let topicCheckbox = document.getElementById(key);
-        if (topicCheckbox) {
-            topicCheckbox.checked = false;
-        }
+        SelectTopic(key, true);  
     });
+    selectedTopics = [];
 }
 
 function FillTopicList() {
@@ -77,6 +91,9 @@ function FillTopicList() {
             topicElement.style.backgroundImage = topics[key].icon;
             topicCheckbox.id = key;
             topicCheckbox.type = 'checkbox';
+            topicCheckbox.onchange = (e) => { 
+                e.target.checked ? SelectTopic(key) : SelectTopic(key, true);  
+            };
             topicLabel.htmlFor = key;
             topicLabel.innerText = key;
 
@@ -85,6 +102,8 @@ function FillTopicList() {
             topicListElement.appendChild(topicElement);
         });
     }
+
+    SelectTopic(null, true);
 }
 
 //---- Options
