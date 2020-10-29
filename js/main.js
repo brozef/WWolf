@@ -129,7 +129,9 @@ const routes = {
     home: 'index.html',
     categories: 'categories.html',
     howto: 'howto.html',
-    setup: 'setup.html'
+    setup: 'setup.html',
+    game: 'game.html',
+    debrief: 'debrief.html'
 };
 
 function change_route(route) {
