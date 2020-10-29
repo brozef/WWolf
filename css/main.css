@@ -225,6 +225,7 @@ section.calltoaction {
     -webkit-appearance: none;
     appearance: none;
     cursor: pointer;
+    border: none;
 }
 
 .categories .topic-list input:checked {
