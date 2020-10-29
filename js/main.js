@@ -2,11 +2,7 @@
 // STATE
 
 let state = {
-    version: '1.0.0',
-    router: {
-        current: null,
-        history: []
-    },
+    version: '1.0.1',
     game: {
         selectedTopics: []
     }
@@ -135,43 +131,27 @@ const routes = {
     debrief: 'debrief.html'
 };
 
-function change_route(route) {
-    if (routes[route]) {
-        if (route == routes.home) {
-            state.router.history = [];
-        }
-        save_state();
+function Navigate(route) {
+    if (route == 'back') {
+        window.history.back();
+    } else if (routes[route]) {
+        window.history.pushState(route, route);
         document.location.href = routes[route];
     } else {
-        console.error("INTERNAL route does not exist", route);
+        console.error("Route does not exist", route);
     }
 }
 
 function NavigateBack() {
-    let back = state.router.history.pop();
-
-    while(back != null && document.location.href.indexOf(routes[back]) > -1) {
-        back = state.router.history.pop();
-    }
-
-    if (back == null) {
-        back = 'home';
-    }
-
-    state.router.current = back;
-    change_route(back);
+    Navigate('back');
 }
 
-function Navigate(route) {
-    if (route == 'back') {
-        return NavigateBack();
-    }
-
-    if (routes[route]) {
-        state.router.history.push(state.router.current);
-        state.router.current = route;
-        change_route(route);
-    } else {
-        console.error("attempted route does not exist", route);
-    }
+window.onunload = function(event) {
+    save_state();
 }
+
+if (window.history.state == null) {
+    window.history.pushState('home', 'home', routes.home);
+}
+
+console.log(window.history.state);
