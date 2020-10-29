@@ -1,19 +1,26 @@
-
 // -----------------------------------------------------------
 // STATE
 
 let state = {
+    version: '1.0.0',
     router: {
         current: null,
         history: []
     },
-    game: {}
+    game: {
+        selectedTopics: []
+    }
 };
 
 function load_state() {
-    const savedState = window.sessionStorage.getItem('state');
-    if (savedState) {
-        state = JSON.parse(savedState);
+    const savedJson = window.sessionStorage.getItem('state');
+    if (savedJson) {
+        let savedState = JSON.parse(savedJson);
+        if (state.version == savedState.version) {
+            state = savedState;
+        } else {
+            // conversion ?
+        }
     }
 }
 
@@ -36,49 +43,50 @@ const topics = {
     }
 };
 
-let selectedTopics = [];
-
 function SelectTopic(topic, deselect = false) {
-    const index = selectedTopics.indexOf(topic);
+    const index = state.game.selectedTopics.indexOf(topic);
 
     let topicCheckbox = document.getElementById(topic);
     if (index < 0 && !deselect) {
-        selectedTopics.push(topic);
+        state.game.selectedTopics.push(topic);
         if (topicCheckbox) {
             topicCheckbox.checked = true;
         }
     } else if (index > -1 && deselect) {
-        selectedTopics.splice(index, 1);
+        state.game.selectedTopics.splice(index, 1);
         if (topicCheckbox) {
             topicCheckbox.checked = false;
         }
     }
     
-    if (selectedTopics.length == 0) {
+    if (state.game.selectedTopics.length == 0) {
         document.getElementById('next-top').style.display = 'none';
         document.getElementById('next-bottom').style.display = 'none';
     } else {
         document.getElementById('next-top').style.display = '';
         document.getElementById('next-bottom').style.display = '';
     }
+
+    save_state();
 }
 
 function SelectAllTopics() {
-    selectedTopics = [];
+    state.game.selectedTopics = [];
     Object.keys(topics).forEach(key => {
         SelectTopic(key);        
     });
 }
 
-
 function DeselectAllTopics() {
     Object.keys(topics).forEach(key => {
         SelectTopic(key, true);  
     });
-    selectedTopics = [];
+    state.game.selectedTopics = [];
 }
 
 function FillTopicList() {
+    SelectTopic(null, true);
+
     let topicListElement = document.getElementById('topic-list');
     if (topicListElement) {
         topicListElement.innerHTML = '';
@@ -89,11 +97,16 @@ function FillTopicList() {
             let topicLabel = document.createElement('label');
 
             topicElement.style.backgroundImage = topics[key].icon;
+
             topicCheckbox.id = key;
-            topicCheckbox.type = 'checkbox';
+            topicCheckbox.type = 'checkbox';            
+            if (state.game.selectedTopics.includes(key)) {
+                topicCheckbox.checked = true;
+            }
             topicCheckbox.onchange = (e) => { 
                 e.target.checked ? SelectTopic(key) : SelectTopic(key, true);  
             };
+            
             topicLabel.htmlFor = key;
             topicLabel.innerText = key;
 
@@ -102,8 +115,6 @@ function FillTopicList() {
             topicListElement.appendChild(topicElement);
         });
     }
-
-    SelectTopic(null, true);
 }
 
 //---- Options
