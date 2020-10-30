@@ -135,7 +135,7 @@ function Navigate(route) {
     if (route == 'back') {
         window.history.back();
     } else if (routes[route]) {
-        window.history.pushState(route, route);
+        history.pushState(route, route, routes[route]);
         document.location.href = routes[route];
     } else {
         console.error("Route does not exist", route);
@@ -148,10 +148,4 @@ function NavigateBack() {
 
 window.onunload = function(event) {
     save_state();
-}
-
-if (window.history.state == null) {
-    window.history.pushState('home', 'home', routes.home);
-}
-
-console.log(window.history.state);
+};
