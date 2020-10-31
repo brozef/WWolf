@@ -8,9 +8,8 @@ Math.clamp = function(value, min = 0, max = 1) {
 // STATE
 
 let state = {
-    version: '1.0.2',
+    version: '1.0.4',
     game: {
-        started: false,
         selectedTopics: [],
         options: {
             wolvesAreUnique: false,
@@ -26,7 +25,8 @@ let state = {
         wolves: [],
         phrases: [],
         topic: null,
-        subcategory: null
+        subcategory: null,
+        turn: 0
     }
 };
 
@@ -159,11 +159,6 @@ function FillTopicList() {
 function ApplyGameOptions() {
     const previousOptions = state.game.options;
 
-    if (state.game.started) {
-        // check for differences
-        state.game.started = false;
-    }
-
     state.game.devices.local.host = true;
 
     save_state();
@@ -240,11 +235,6 @@ function UpdateLocalPlayerCount() {
 
 //---- Assignments
 function AssignPhrases() {
-    if (state.game.started) {
-        console.warn('AssignPhrases', 'game already started');
-        return;
-    }
-
     const totalPlayerCount = GetTotalPlayerCount();
 
     if (totalPlayerCount < 3) {
@@ -297,17 +287,17 @@ function AssignPhrases() {
         state.game.wolves.push(wolfIndex);
     }
 
-    state.game.started = true;
-
-    console.log(game);
-
     save_state();
+}
+
+function PhraseIndexToText(topic, category, phrase) {
+    return topics[topic].subcategories[category].phrases[phrase];
 }
 
 function GetPhraseForLocalPlayer(localPlayerIndex) {
     const localPlayerCount = GetLocalPlayerCount();
 
-    if (playerIndex >= localPlayerCount) {
+    if (localPlayerIndex >= localPlayerCount) {
         console.error('GetPhraseForPlayer', 'bad player index')
         return null;
     }
@@ -317,20 +307,37 @@ function GetPhraseForLocalPlayer(localPlayerIndex) {
         return null;
     }
 
-    const wolfIndex = state.game.wolves.indexOf(playerIndex);
+    const wolfIndex = state.game.wolves.indexOf(localPlayerIndex);
     if (wolfIndex < 0) {
         // not wolf
-        return state.game.phrases[0];
+        return PhraseIndexToText(state.game.topic, state.game.subcategory, state.game.phrases[0]);
     } else if (state.game.wolvesAreUnique && state.game.phrases.length > state.game.wolves.length) {
         // wolf and unique phrases are on and viable
-        return state.game.phrases[wolfIndex + 1];
+        return PhraseIndexToText(state.game.topic, state.game.subcategory, state.game.phrases[wolfIndex + 1]);
     } else {
         // wolves are not unique
         if (state.game.wolvesAreUnique) {
             console.warn('GetPhraseForPLayer', '"wolves are unique" is on but state is not viable');
         }
 
-        return state.phrases[1];
+        return PhraseIndexToText(state.game.topic, state.game.subcategory, state.game.phrases[1]);
+    }
+}
+
+function TurnAction() {
+    if (state.game.turn > GetTotalPlayerCount()) {
+       //something to turn on discuss visuals
+    } else {
+        const phraseElement = document.getElementById('phrase');
+        const actionButton = document.getElementById('action-btn');
+        if (phraseElement.innerText == '') {
+            phraseElement.innerText = GetPhraseForLocalPlayer(state.game.turn);
+            actionButton.innerText = 'Ok';
+        } else {
+            state.game.turn++;
+            phraseElement.innerText = '';
+            actionButton.innerText = 'Ready';
+        }
     }
 }
 

@@ -24,18 +24,23 @@
     </head>
     <body class="game">
         <main>
-            <section>
-                <h2>Player Name</h2>
-            </section>
-            <div class="separator"></div>
-            <section>
-                <button id="action-btn">Ok</button>
+            <section id='assignment'>
+                <h2 id="player-name">Player Name</h2>
+                <div class="separator"></div>
+                <p id='phrase'></p>
+                <button id="action-btn" onclick="TurnAction()">Ready</button>
             </section>
         </main>
         <footer>
             MOJO LABS 2020
         </footer>
         <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript">AssignPhrases();</script>
+        <script type="text/javascript">
+            AssignPhrases();
+            window.onbeforeunload = function(event) {
+                event.preventDefault();
+                event.returnValue = 'Are you sure you want to exit this round?';
+            };
+        </script>
     </body>
 </html>
