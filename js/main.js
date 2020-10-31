@@ -254,6 +254,7 @@ function AssignPhrases() {
 
     if (state.game.options.wolfCount > totalPlayerCount / 2) {
         console.error('AssignPhrases', 'Too many wolves');
+        return;
     }
 
     const topicIndex = Math.floor(Math.random() * state.game.selectedTopics.length);
