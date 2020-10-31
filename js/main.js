@@ -241,7 +241,7 @@ function UpdateLocalPlayerCount() {
 //---- Assignments
 function AssignPhrases() {
     if (state.game.started) {
-        console.warn('AddignPhrases', 'game already started');
+        console.warn('AssignPhrases', 'game already started');
         return;
     }
 
