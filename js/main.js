@@ -148,7 +148,7 @@ function FillTopicList() {
 
 //---- Setup
 
-//---- Assign
+//---- Assignments
 function AssignPhrases() {
     if (state.game.players == null || state.game.players.length < 3) {
         console.error('AssignPhrases', 'Not enough players');
