@@ -10,7 +10,12 @@ Math.clamp = function(value, min = 0, max = 1) {
 let state = {
     version: '1.0.1',
     game: {
-        selectedTopics: []
+        selectedTopics: [],
+        players: [],
+        wolves: [],
+        phrases: [],
+        topic: null,
+        subcategory: null
     }
 };
 
@@ -146,19 +151,19 @@ function FillTopicList() {
 //---- Assign
 function AssignPhrases() {
     if (state.game.players == null || state.game.players.length < 3) {
-        console.error('Assignment: Not enough players');
+        console.error('AssignPhrases', 'Not enough players');
         return;
     }
 
     if (state.game.wolfCount > state.game.players.length / 2) {
-        console.error('Assignment: Too many wolves');
+        console.error('AssignPhrases', 'Too many wolves');
     }
 
     const topicIndex = Math.floor(Math.random() * state.game.selectedTopics.length);
     const topicName = state.game.selectedTopics[topicIndex];
     const topic = topics[topicName];
     if (topic == null || topic.subcategories == null || topic.subcategories.length == 0) {
-        console.error('Assignment: Topic no subcategories', topicName);
+        console.error('AssignPhrases', 'Topic no subcategories', topicName);
         return;
     } 
 
@@ -166,7 +171,7 @@ function AssignPhrases() {
     const subcategory = topic.subcategories[subcategoryIndex];
     
     if (subcategory.phrases == null || subcategory.phrases == null || subcategory.phrases.length < 2) {
-        console.error('Assignment: Topic has incomplete subcategory', topicName, subcategory.name);
+        console.error('AssignPhrases', 'Topic has incomplete subcategory', topicName, subcategory.name);
         return;
     }
 
@@ -195,6 +200,34 @@ function AssignPhrases() {
     }
 }
 
+function GetPhraseForPlayer(playerIndex) {
+    if (state.game.players == null || playerIndex >= state.game.players.length) {
+        console.error('GetPhraseForPlayer', 'bad player index')
+        return null;
+    }
+
+    if (state.game.phrases == null || state.game.phrases.length < 2) {
+        console.error('GetPhraseForPlayer', 'bad state');
+        return null;
+    }
+
+    const wolfIndex = state.game.wolves.indexOf(playerIndex);
+    if (wolfIndex < 0) {
+        // not wolf
+        return state.game.phrases[0];
+    } else if (state.game.wolvesAreUnique && state.game.phrases.length > state.game.wolves.length) {
+        // wolf and unique phrases are on and viable
+        return state.game.phrases[wolfIndex + 1];
+    } else {
+        // wolves are not unique
+        if (state.game.wolvesAreUnique) {
+            console.warn('GetPhraseForPLayer', 'wolves are unique is on but state is not viable');
+        }
+
+        return state.phrases[1];
+    }
+}
+
 //---- Debrief
 
 // -----------------------------------------------------------
@@ -216,7 +249,7 @@ function Navigate(route) {
         history.pushState(route, route, routes[route]);
         document.location.href = routes[route];
     } else {
-        console.error("Route does not exist", route);
+        console.error('Navigate', 'Route does not exist', route);
     }
 }
 
