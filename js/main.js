@@ -252,7 +252,7 @@ function AssignPhrases() {
         return;
     }
 
-    if (state.game.wolfCount > totalPlayerCount / 2) {
+    if (state.game.options.wolfCount > totalPlayerCount / 2) {
         console.error('AssignPhrases', 'Too many wolves');
     }
 
@@ -273,12 +273,12 @@ function AssignPhrases() {
     }
 
     state.game.topic = topicName;
-    state.game.subcategory = subcategory.name;
+    state.game.subcategory = subcategoryIndex;
     state.game.phrases = [];
     state.game.wolves = [];
     
     //if phrase count > 2 then each wolf has its own phrase
-    let phraseCount = state.game.wolvesAreUnique ? state.game.wolfCount : 2;
+    let phraseCount = state.game.options.wolvesAreUnique ? state.game.options.wolfCount : 2;
     for(let i = 0; i < phraseCount; i++) {
         let phraseIndex = -1;
         while (phraseIndex < 0 || state.game.phrases.includes(phraseIndex)) {
@@ -287,7 +287,7 @@ function AssignPhrases() {
         state.game.phrases.push(phraseIndex);
     }
 
-    for (let i = 0; i < state.game.wolfCount; i++) {
+    for (let i = 0; i < state.game.options.wolfCount; i++) {
         let wolfIndex = -1;
         while(wolfIndex < 0 || state.game.wolves.includes(wolfIndex)) {
             wolfIndex = Math.floor(Math.random() * totalPlayerCount);
