@@ -350,7 +350,6 @@ function Navigate(route) {
     if (route == 'back') {
         window.history.back();
     } else if (routes[route]) {
-        history.pushState(route, route, routes[route]);
         document.location.href = routes[route];
     } else {
         console.error('Navigate', 'Route does not exist', route);
