@@ -1,4 +1,10 @@
 // -----------------------------------------------------------
+// UTILS
+Math.clamp = function(value, min = 0, max = 1) {
+    return Math.min(Math.max(value, min), max);
+}
+
+// -----------------------------------------------------------
 // STATE
 
 let state = {
@@ -32,10 +38,30 @@ load_state();
 //---- Topics
 const topics = {
     space: {
-        icon: 'url("https://icons-for-free.com/iconfiles/png/512/astronomy+planet+science+space+icon-1320195089993574465.png")'
+        icon: 'url("https://icons-for-free.com/iconfiles/png/512/astronomy+planet+science+space+icon-1320195089993574465.png")',
+        subcategories: [
+            {
+                name: 'enities',
+                phrases: ['Elon Musk', 'Neil Armstrong', 'Buzz Lightyear', 'Buzz Aldrin', 'Nasa']
+            },
+            {
+                name: 'planets & bodies',
+                phrases: ['Nasa', 'Uranus', 'Earth', 'Moon', 'Mars', 'Sun', 'Stars']
+            }
+        ]
     },
     nature: {
-        icon: 'url("https://image.flaticon.com/icons/png/128/2990/2990966.png")'
+        icon: 'url("https://image.flaticon.com/icons/png/128/2990/2990966.png")',
+        subcategories: [
+            {
+                name: 'fauna & flora',
+                phrases: ['Cat', 'Dog', 'Budgie', 'Bug', 'Lion']
+            },
+            {
+                name: 'places',
+                phrases: ['Waterfall', 'Mountain', 'Beach', 'Desert', 'Oasis']
+            }
+        ]
     }
 };
 
@@ -116,6 +142,58 @@ function FillTopicList() {
 //---- Options
 
 //---- Setup
+
+//---- Assign
+function AssignPhrases() {
+    if (state.game.players == null || state.game.players.length < 3) {
+        console.error('Assignment: Not enough players');
+        return;
+    }
+
+    if (state.game.wolfCount > state.game.players.length / 2) {
+        console.error('Assignment: Too many wolves');
+    }
+
+    const topicIndex = Math.floor(Math.random() * state.game.selectedTopics.length);
+    const topicName = state.game.selectedTopics[topicIndex];
+    const topic = topics[topicName];
+    if (topic == null || topic.subcategories == null || topic.subcategories.length == 0) {
+        console.error('Assignment: Topic no subcategories', topicName);
+        return;
+    } 
+
+    const subcategoryIndex = Math.floor(Math.random() * topic.subcategories.length);
+    const subcategory = topic.subcategories[subcategoryIndex];
+    
+    if (subcategory.phrases == null || subcategory.phrases == null || subcategory.phrases.length < 2) {
+        console.error('Assignment: Topic has incomplete subcategory', topicName, subcategory.name);
+        return;
+    }
+
+    state.game.topic = topic;
+    state.game.subcategory = subcategory.name;
+    state.game.phrases = [];
+    state.game.wolves = [];
+    
+    //if phrase count > 2 then each wolf has its own phrase
+    let phraseCount = state.game.wolvesAreUnique ? state.game.wolfCount : 2;
+    for(let i = 0; i < phraseCount; i++) {
+        let phraseIndex = -1;
+        while (phraseIndex < 0 || state.game.phrases.includes(phraseIndex)) {
+            phraseIndex = Math.floor(Math.random() * subcategory.phrases.length);
+        }
+        state.game.phrases.push(phraseIndex);
+    }
+
+    for (let i = 0; i < state.game.wolfCount; i++) {
+        let wolfIndex = -1;
+        while(wolfIndex < 0 || state.game.wolves.includes(wolfIndex)) {
+            wolfIndex = Math.floor(Math.random() * state.game.players.length);
+        }
+        
+        state.game.wolves.push(wolfIndex);
+    }
+}
 
 //---- Debrief
 
