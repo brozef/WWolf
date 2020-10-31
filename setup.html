@@ -31,16 +31,21 @@
         <main>
             <section>
                 <h2>Players</h2>
-                <button class="btn small">-</button> 3 <button class="btn small">+</button>
+                <button class="btn small" onclick="AdjustLocalPlayerCount(-1)">-</button>
+                <input id="localPlayerCount" type="text" value="3" onchange="UpdateLocalPlayerCount()"/>
+                <button class="btn small" onclick="AdjustLocalPlayerCount(1)">+</button>
             </section>
+
             <section>
                 <h2>Wolf Count</h2>
-                <button class="btn small">-</button> 1 <button class="btn small">+</button>
+                <button class="btn small">-</button>
+                <input id="wolfCount" type="text" value="1" />
+                <button class="btn small">+</button>
             </section>
             
             <section>
                 <h2>Options</h2>
-                sfw | wolfs know
+                sfw | wolfs know | wolves are unique
             </section>
 
             <div class="separator"></div>
@@ -53,5 +58,6 @@
             MOJO LABS 2020
         </footer>
         <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript">UpdateLocalPlayerCount();</script>
     </body>
 </html>

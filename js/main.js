@@ -8,10 +8,21 @@ Math.clamp = function(value, min = 0, max = 1) {
 // STATE
 
 let state = {
-    version: '1.0.1',
+    version: '1.0.2',
     game: {
+        started: false,
         selectedTopics: [],
-        players: [],
+        options: {
+            wolvesAreUnique: false,
+            wolfCount: 2,
+            nsfw: false
+        },
+        devices: {
+            local: {
+                host: false,
+                players: []
+            }
+        },
         wolves: [],
         phrases: [],
         topic: null,
@@ -144,18 +155,104 @@ function FillTopicList() {
     }
 }
 
-//---- Options
-
 //---- Setup
+function ApplyGameOptions() {
+    const previousOptions = state.game.options;
+
+    if (state.game.started) {
+        // check for differences
+        state.game.started = false;
+    }
+
+    state.game.devices.local.host = true;
+
+    save_state();
+}
+
+function GetRemotePlayerCount() {
+    return 0;
+}
+
+function GetLocalPlayerCount() {
+    return state.game.devices.local.players.length;
+}
+
+function GetTotalPlayerCount() {
+    return GetLocalPlayerCount()+ GetRemotePlayerCount();
+}
+
+function AddLocalPlayer() {
+    const localPlayerCount = GetLocalPlayerCount();
+    state.game.devices.local.players.push({ name: 'Player ' + localPlayerCount + 1});
+
+    save_state();
+}
+
+function RemoveLocalPlayer(index = -1) {
+    const totalPlayerCount = GetTotalPlayerCount();
+
+    if (index < 0) {
+        state.game.devices.local.players.pop();
+    } else if (GetLocalPlayerCount() > index) {
+        state.game.devices.local.players.splice(index, 1);
+    }
+
+    save_state();
+}
+
+function AdjustLocalPlayerCount(adjustment) {
+    const localPlayerCountInput = document.getElementById('localPlayerCount');
+    localPlayerCountInput.value = '' + (GetLocalPlayerCount() + adjustment);
+    UpdateLocalPlayerCounts();
+}
+
+function UpdateLocalPlayerCounts() {
+    const localPlayerCountInput = document.getElementById('localPlayerCount');
+
+    let newInputCount = Number(localPlayerCountInput.value);
+    if (Number.isNaN(newInputCount) || newInputCount < 1) {
+        console.error('UpdateLocalPlayers', 'invalid count value', value);
+        newInputCount = GetLocalPlayerCount();
+    }
+
+    // limit total players to min of 3
+    if (state.game.devices.local.host) {
+        const remoteCount = GetRemotePlayerCount();
+        if (remoteCount + newInputCount < 3) {
+            newInputCount = 3 - remoteCount;
+        }
+    }
+
+    const currentCount = GetLocalPlayerCount();
+    for (let i = 0; i < Math.abs(currentCount - newInputCount); i++) {
+        if (currentCount > newInputCount) {
+            RemoveLocalPlayer();
+        } else if (currentCount < newInputCount) {
+            AddLocalPlayer();
+        }
+    }
+
+    // disable decrement if we are at min TOTAL players
+    if (GetTotalPlayerCount() <= 3) {
+        document.getElementById('localPlayerCountDecrement').style.display = 'disabled';
+    }
+}
 
 //---- Assignments
 function AssignPhrases() {
-    if (state.game.players == null || state.game.players.length < 3) {
+    if (state.game.started) {
+        console.warn('AddignPhrases', 'game already started');
+        return;
+    }
+
+    const totalPlayerCount = GetTotalPlayerCount();
+
+    if (state.game.players == null || playerCount < 3) {
         console.error('AssignPhrases', 'Not enough players');
         return;
     }
 
-    if (state.game.wolfCount > state.game.players.length / 2) {
+    if (state.game.wolfCount > playerCount / 2) {
         console.error('AssignPhrases', 'Too many wolves');
     }
 
@@ -193,15 +290,21 @@ function AssignPhrases() {
     for (let i = 0; i < state.game.wolfCount; i++) {
         let wolfIndex = -1;
         while(wolfIndex < 0 || state.game.wolves.includes(wolfIndex)) {
-            wolfIndex = Math.floor(Math.random() * state.game.players.length);
+            wolfIndex = Math.floor(Math.random() * playerCount);
         }
         
         state.game.wolves.push(wolfIndex);
     }
+
+    state.game.started = true;
+
+    save_state();
 }
 
-function GetPhraseForPlayer(playerIndex) {
-    if (state.game.players == null || playerIndex >= state.game.players.length) {
+function GetPhraseForLocalPlayer(localPlayerIndex) {
+    const localPlayerCount = GetLocalPlayerCount();
+
+    if (playerIndex >= localPlayerCount) {
         console.error('GetPhraseForPlayer', 'bad player index')
         return null;
     }
@@ -221,7 +324,7 @@ function GetPhraseForPlayer(playerIndex) {
     } else {
         // wolves are not unique
         if (state.game.wolvesAreUnique) {
-            console.warn('GetPhraseForPLayer', 'wolves are unique is on but state is not viable');
+            console.warn('GetPhraseForPLayer', '"wolves are unique" is on but state is not viable');
         }
 
         return state.phrases[1];
@@ -229,6 +332,7 @@ function GetPhraseForPlayer(playerIndex) {
 }
 
 //---- Debrief
+// set ganmestarted to false
 
 // -----------------------------------------------------------
 // PAGE NAVIGATION
