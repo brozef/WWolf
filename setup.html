@@ -31,7 +31,7 @@
         <main>
             <section>
                 <h2>Players</h2>
-                <button class="btn small" onclick="AdjustLocalPlayerCount(-1)">-</button>
+                <button id="localPlayerCountDecrement" class="btn small" onclick="AdjustLocalPlayerCount(-1)">-</button>
                 <input id="localPlayerCount" type="text" value="3" onchange="UpdateLocalPlayerCount()"/>
                 <button class="btn small" onclick="AdjustLocalPlayerCount(1)">+</button>
             </section>

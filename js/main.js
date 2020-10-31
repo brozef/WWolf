@@ -203,10 +203,10 @@ function RemoveLocalPlayer(index = -1) {
 function AdjustLocalPlayerCount(adjustment) {
     const localPlayerCountInput = document.getElementById('localPlayerCount');
     localPlayerCountInput.value = '' + (GetLocalPlayerCount() + adjustment);
-    UpdateLocalPlayerCounts();
+    UpdateLocalPlayerCount();
 }
 
-function UpdateLocalPlayerCounts() {
+function UpdateLocalPlayerCount() {
     const localPlayerCountInput = document.getElementById('localPlayerCount');
 
     let newInputCount = Number(localPlayerCountInput.value);
@@ -247,12 +247,12 @@ function AssignPhrases() {
 
     const totalPlayerCount = GetTotalPlayerCount();
 
-    if (state.game.players == null || playerCount < 3) {
+    if (totalPlayerCount < 3) {
         console.error('AssignPhrases', 'Not enough players');
         return;
     }
 
-    if (state.game.wolfCount > playerCount / 2) {
+    if (state.game.wolfCount > totalPlayerCount / 2) {
         console.error('AssignPhrases', 'Too many wolves');
     }
 
@@ -272,7 +272,7 @@ function AssignPhrases() {
         return;
     }
 
-    state.game.topic = topic;
+    state.game.topic = topicName;
     state.game.subcategory = subcategory.name;
     state.game.phrases = [];
     state.game.wolves = [];
@@ -290,13 +290,15 @@ function AssignPhrases() {
     for (let i = 0; i < state.game.wolfCount; i++) {
         let wolfIndex = -1;
         while(wolfIndex < 0 || state.game.wolves.includes(wolfIndex)) {
-            wolfIndex = Math.floor(Math.random() * playerCount);
+            wolfIndex = Math.floor(Math.random() * totalPlayerCount);
         }
         
         state.game.wolves.push(wolfIndex);
     }
 
     state.game.started = true;
+
+    console.log(game);
 
     save_state();
 }
