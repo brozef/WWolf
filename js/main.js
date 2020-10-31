@@ -14,7 +14,7 @@ let state = {
         selectedTopics: [],
         options: {
             wolvesAreUnique: false,
-            wolfCount: 2,
+            wolfCount: 1,
             nsfw: false
         },
         devices: {
