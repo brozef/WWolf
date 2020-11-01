@@ -177,7 +177,7 @@ function UpdateOptions() {
     const uniqueWolvesElement = document.getElementById('unique-wolves');
     const wolfCountElement = document.getElementById('wolf-count');
 
-    state.options.wolfCount = wolfCountElement.value;
+    state.options.wolfCount = Number(wolfCountElement.value);
     state.options.wolvesAreUnique = uniqueWolvesElement.checked;
     state.options.wolvesKnow = wolvesKnowElement.checked;
     state.options.nsfw = nswfElement.checked;
