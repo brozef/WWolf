@@ -202,7 +202,7 @@ function AdjustLocalPlayerCount(adjustment) {
 }
 
 function UpdateLocalPlayerCount() {
-    const localPlayerCountInput = document.getElementById('localPlayerCount');
+    let localPlayerCountInput = document.getElementById('localPlayerCount');
 
     let newInputCount = Number(localPlayerCountInput.value);
     if (Number.isNaN(newInputCount) || newInputCount < 1) {
@@ -226,6 +226,8 @@ function UpdateLocalPlayerCount() {
             AddLocalPlayer();
         }
     }
+
+    localPlayerCountInput.value = newInputCount;
 
     // disable decrement if we are at min TOTAL players
     if (GetTotalPlayerCount() <= 3) {
