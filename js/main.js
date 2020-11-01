@@ -390,7 +390,7 @@ function TurnAction() {
         const wolfElement = document.getElementById('wolf');
         if (phraseElement.innerText == '') {
             phraseElement.innerText = GetPhraseForLocalPlayer(state.turn);
-            if (state.options.wolvesKnow && IsLocalPlayerWolf(state.gme.turn)){
+            if (state.options.wolvesKnow && IsLocalPlayerWolf(state.turn)){
                 wolfElement.style.display = '';
             }
             actionButton.innerText = 'Ok';
