@@ -380,11 +380,13 @@ function NavigateBack() {
 }
 
 function ConfirmBackNavigation() {
+    window.history.replaceState({}, document.title);
     window.history.pushState({type: 'confirmation'}, document.title);
+ 
+    console.log(history);
 }
 
 window.onpopstate = event => {
-    console.log(event);
     if (event.state.type == 'confirmation') {
         if (confirm('are you sure?')) {
             NavigateBack();
