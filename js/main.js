@@ -380,8 +380,8 @@ function NavigateBack() {
 }
 
 function ConfirmBackNavigation() {
-    window.history.replaceState({}, document.title);
-    window.history.pushState({type: 'confirmation'}, document.title);
+    window.history.replaceState({type: 'confirmation'}, document.title);
+    window.history.pushState({}, document.title);
  
     console.log(history);
 }
