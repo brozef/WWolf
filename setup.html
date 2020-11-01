@@ -46,23 +46,27 @@
             <section>
                 <h2>Options</h2>
 
-                NSFW
-                <label class="switch" id='nsfw'>
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-
-                Wolves Know
-                <label class="switch" id='wolves-know'>
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-                
-                Unique Wolves
-                <label class="switch" id='unique-wolves'>
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
+                <div class="switch-container">
+                    NSFW
+                    <label class="switch">
+                        <input type="checkbox" id="nsfw" onchange="UpdateOptions()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="switch-container">
+                    Wolves Know
+                    <label class="switch">
+                        <input type="checkbox" id="wolves-know" onchange="UpdateOptions()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="switch-container">
+                    Unique Wolves
+                    <label class="switch" >
+                        <input type="checkbox" id="unique-wolves" onchange="UpdateOptions()">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </section>
 
             <div class="separator"></div>
@@ -75,6 +79,9 @@
             MOJO LABS 2020
         </footer>
         <script type="text/javascript" src="js/main.js"></script>
-        <script type="text/javascript">UpdateLocalPlayerCount(true);</script>
+        <script type="text/javascript">
+            UpdateLocalPlayerCount(true);
+            LoadOptions();
+        </script>
     </body>
 </html>

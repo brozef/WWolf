@@ -244,6 +244,11 @@ section.calltoaction {
 }
 
  /* The switch - the box around the slider */
+ .switch-container {
+    line-height: 34px;
+    margin: 10px;
+ }
+
  .switch {
     position: relative;
     display: inline-block;

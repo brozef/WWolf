@@ -8,26 +8,24 @@ Math.clamp = function(value, min = 0, max = 1) {
 // STATE
 
 let state = {
-    version: '1.0.4',
-    game: {
-        selectedTopics: [],
-        options: {
-            wolvesAreUnique: false,
-            wolfCount: 1,
-            nsfw: false
-        },
-        devices: {
-            local: {
-                host: false,
-                players: []
-            }
-        },
-        wolves: [],
-        phrases: [],
-        topic: null,
-        subcategory: null,
-        turn: 0
-    }
+    version: '1.0.5',
+    selectedTopics: [],
+    options: {
+        wolvesAreUnique: false,
+        wolfCount: 1,
+        nsfw: false
+    },
+    devices: {
+        local: {
+            host: false,
+            players: []
+        }
+    },
+    wolves: [],
+    phrases: [],
+    topic: null,
+    subcategory: null,
+    turn: 0
 };
 
 function load_state() {
@@ -82,22 +80,22 @@ const topics = {
 };
 
 function SelectTopic(topic, deselect = false) {
-    const index = state.game.selectedTopics.indexOf(topic);
+    const index = state.selectedTopics.indexOf(topic);
 
     let topicCheckbox = document.getElementById(topic);
     if (index < 0 && !deselect) {
-        state.game.selectedTopics.push(topic);
+        state.selectedTopics.push(topic);
         if (topicCheckbox) {
             topicCheckbox.checked = true;
         }
     } else if (index > -1 && deselect) {
-        state.game.selectedTopics.splice(index, 1);
+        state.selectedTopics.splice(index, 1);
         if (topicCheckbox) {
             topicCheckbox.checked = false;
         }
     }
     
-    if (state.game.selectedTopics.length == 0) {
+    if (state.selectedTopics.length == 0) {
         document.getElementById('next-top').style.display = 'none';
         document.getElementById('next-bottom').style.display = 'none';
     } else {
@@ -109,7 +107,7 @@ function SelectTopic(topic, deselect = false) {
 }
 
 function SelectAllTopics() {
-    state.game.selectedTopics = [];
+    state.selectedTopics = [];
     Object.keys(topics).forEach(key => {
         SelectTopic(key);        
     });
@@ -119,7 +117,7 @@ function DeselectAllTopics() {
     Object.keys(topics).forEach(key => {
         SelectTopic(key, true);  
     });
-    state.game.selectedTopics = [];
+    state.selectedTopics = [];
 }
 
 function FillTopicList() {
@@ -138,7 +136,7 @@ function FillTopicList() {
 
             topicCheckbox.id = key;
             topicCheckbox.type = 'checkbox';            
-            if (state.game.selectedTopics.includes(key)) {
+            if (state.selectedTopics.includes(key)) {
                 topicCheckbox.checked = true;
             }
             topicCheckbox.onchange = (e) => { 
@@ -156,12 +154,35 @@ function FillTopicList() {
 }
 
 //---- Setup
-function ApplyGameOptions() {
-    const previousOptions = state.game.options;
+function UpdateOptions() {
+    if (state.selectedTopics.length == 0) {
+        Navigate('topics');
+        return;
+    }
 
-    state.game.devices.local.host = true;
+    const previousOptions = state.options;
+
+    const nswfElement = document.getElementById('nsfw');
+    const wolvesKnowElement = document.getElementById('wolves-know');
+    const uniqueWolvesElement = document.getElementById('unique-wolves');
+
+    state.options.wolvesAreUnique = uniqueWolvesElement.checked;
+    state.options.wolvesKnow = wolvesKnowElement.checked;
+    state.options.nsfw = nswfElement.checked;
+
+    state.devices.local.host = true;
 
     save_state();
+}
+
+function LoadOptions() {
+    const nswfElement = document.getElementById('nsfw');
+    const wolvesKnowElement = document.getElementById('wolves-know');
+    const uniqueWolvesElement = document.getElementById('unique-wolves');
+
+    nswfElement.checked = state.options.nsfw;
+    wolvesKnowElement.checked = state.options.wolvesKnow;
+    uniqueWolvesElement.checked = state.options.wolvesAreUnique;
 }
 
 function GetRemotePlayerCount() {
@@ -169,7 +190,7 @@ function GetRemotePlayerCount() {
 }
 
 function GetLocalPlayerCount() {
-    return state.game.devices.local.players.length;
+    return state.devices.local.players.length;
 }
 
 function GetTotalPlayerCount() {
@@ -178,7 +199,7 @@ function GetTotalPlayerCount() {
 
 function AddLocalPlayer() {
     const localPlayerCount = GetLocalPlayerCount();
-    state.game.devices.local.players.push({ name: 'Player ' + localPlayerCount + 1});
+    state.devices.local.players.push({ name: 'Player ' + localPlayerCount + 1});
 
     save_state();
 }
@@ -187,9 +208,9 @@ function RemoveLocalPlayer(index = -1) {
     const totalPlayerCount = GetTotalPlayerCount();
 
     if (index < 0) {
-        state.game.devices.local.players.pop();
+        state.devices.local.players.pop();
     } else if (GetLocalPlayerCount() > index) {
-        state.game.devices.local.players.splice(index, 1);
+        state.devices.local.players.splice(index, 1);
     }
 
     save_state();
@@ -204,24 +225,20 @@ function AdjustLocalPlayerCount(adjustment) {
 function UpdateLocalPlayerCount(useState = false) {
     let localPlayerCountInput = document.getElementById('localPlayerCount');
 
-    let newInputCount = Number(localPlayerCountInput.value);
+    const currentCount = GetLocalPlayerCount();
+    let newInputCount = useState ? currentCount : Number(localPlayerCountInput.value);
+
     if (Number.isNaN(newInputCount) || newInputCount < 1) {
-        console.error('UpdateLocalPlayers', 'invalid count value', value);
-        newInputCount = GetLocalPlayerCount();
+        console.warn('UpdateLocalPlayers', 'invalid count value', newInputCount);
+        newInputCount = currentCount > 3 ? currentCount : 3;
     }
 
     // limit total players to min of 3
-    if (state.game.devices.local.host) {
+    if (state.devices.local.host) {
         const remoteCount = GetRemotePlayerCount();
         if (remoteCount + newInputCount < 3) {
             newInputCount = 3 - remoteCount;
         }
-    }
-
-    const currentCount = GetLocalPlayerCount();
-
-    if (useState) {
-        newInputCount = currentCount;
     }
 
     for (let i = 0; i < Math.abs(currentCount - newInputCount); i++) {
@@ -246,16 +263,17 @@ function AssignPhrases() {
 
     if (totalPlayerCount < 3) {
         console.error('AssignPhrases', 'Not enough players');
+        Navigate('topics');
         return;
     }
 
-    if (state.game.options.wolfCount > totalPlayerCount / 2) {
+    if (state.options.wolfCount > totalPlayerCount / 2) {
         console.error('AssignPhrases', 'Too many wolves');
         return;
     }
 
-    const topicIndex = Math.floor(Math.random() * state.game.selectedTopics.length);
-    const topicName = state.game.selectedTopics[topicIndex];
+    const topicIndex = Math.floor(Math.random() * state.selectedTopics.length);
+    const topicName = state.selectedTopics[topicIndex];
     const topic = topics[topicName];
     if (topic == null || topic.subcategories == null || topic.subcategories.length == 0) {
         console.error('AssignPhrases', 'Topic no subcategories', topicName);
@@ -270,37 +288,45 @@ function AssignPhrases() {
         return;
     }
 
-    state.game.topic = topicName;
-    state.game.subcategory = subcategoryIndex;
-    state.game.phrases = [];
-    state.game.wolves = [];
+    state.topic = topicName;
+    state.subcategory = subcategoryIndex;
+    state.phrases = [];
+    state.wolves = [];
     
     //if phrase count > 2 then each wolf has its own phrase
-    let phraseCount = state.game.options.wolvesAreUnique ? state.game.options.wolfCount : 2;
+    let phraseCount = state.options.wolvesAreUnique ? state.options.wolfCount : 2;
     for(let i = 0; i < phraseCount; i++) {
         let phraseIndex = -1;
-        while (phraseIndex < 0 || state.game.phrases.includes(phraseIndex)) {
+        while (phraseIndex < 0 || state.phrases.includes(phraseIndex)) {
             phraseIndex = Math.floor(Math.random() * subcategory.phrases.length);
+            if (subcategory.phrases[phraseIndex].nsfw && !state.options.nsfw) {
+                phraseIndex = -1;
+            }
         }
-        state.game.phrases.push(phraseIndex);
+        state.phrases.push(phraseIndex);
     }
 
-    for (let i = 0; i < state.game.options.wolfCount; i++) {
+    for (let i = 0; i < state.options.wolfCount; i++) {
         let wolfIndex = -1;
-        while(wolfIndex < 0 || state.game.wolves.includes(wolfIndex)) {
+        while(wolfIndex < 0 || state.wolves.includes(wolfIndex)) {
             wolfIndex = Math.floor(Math.random() * totalPlayerCount);
         }
         
-        state.game.wolves.push(wolfIndex);
+        state.wolves.push(wolfIndex);
     }
 
-    state.game.turn = 0;
+    state.turn = 0;
 
     save_state();
 }
 
 function PhraseIndexToText(topic, category, phrase) {
     return topics[topic].subcategories[category].phrases[phrase];
+}
+
+function IsLocalPlayerWolf(localPlayerIndex) {
+    const wolfIndex = state.wolves.indexOf(localPlayerIndex);
+    return wolfIndex > -1;
 }
 
 function GetPhraseForLocalPlayer(localPlayerIndex) {
@@ -311,30 +337,30 @@ function GetPhraseForLocalPlayer(localPlayerIndex) {
         return null;
     }
 
-    if (state.game.phrases == null || state.game.phrases.length < 2) {
+    if (state.phrases == null || state.phrases.length < 2) {
         console.error('GetPhraseForPlayer', 'bad state');
         return null;
     }
 
-    const wolfIndex = state.game.wolves.indexOf(localPlayerIndex);
+    const wolfIndex = state.wolves.indexOf(localPlayerIndex);
     if (wolfIndex < 0) {
         // not wolf
-        return PhraseIndexToText(state.game.topic, state.game.subcategory, state.game.phrases[0]);
-    } else if (state.game.wolvesAreUnique && state.game.phrases.length > state.game.wolves.length) {
+        return PhraseIndexToText(state.topic, state.subcategory, state.phrases[0]);
+    } else if (state.wolvesAreUnique && state.phrases.length > state.wolves.length) {
         // wolf and unique phrases are on and viable
-        return PhraseIndexToText(state.game.topic, state.game.subcategory, state.game.phrases[wolfIndex + 1]);
+        return PhraseIndexToText(state.topic, state.subcategory, state.phrases[wolfIndex + 1]);
     } else {
         // wolves are not unique
-        if (state.game.wolvesAreUnique) {
+        if (state.wolvesAreUnique) {
             console.warn('GetPhraseForPLayer', '"wolves are unique" is on but state is not viable');
         }
 
-        return PhraseIndexToText(state.game.topic, state.game.subcategory, state.game.phrases[1]);
+        return PhraseIndexToText(state.topic, state.subcategory, state.phrases[1]);
     }
 }
 
 function TurnAction() {
-    if (state.game.turn >= GetTotalPlayerCount()) {
+    if (state.turn >= GetTotalPlayerCount()) {
         const assignElement = document.getElementById('assignment');
         assignElement.style.display = 'none';
 
@@ -343,11 +369,15 @@ function TurnAction() {
     } else {
         const phraseElement = document.getElementById('phrase');
         const actionButton = document.getElementById('action-btn');
+        const wolfElement = document.getElementById('wolf');
         if (phraseElement.innerText == '') {
-            phraseElement.innerText = GetPhraseForLocalPlayer(state.game.turn);
+            phraseElement.innerText = GetPhraseForLocalPlayer(state.turn);
+            if (state.options.wolvesKnow && IsLocalPlayerWolf(state.gme.turn)){
+                wolfElement.style.display = '';
+            }
             actionButton.innerText = 'Ok';
         } else {
-            state.game.turn++;
+            state.turn++;
             phraseElement.innerText = '';
             actionButton.innerText = 'Ready';
         }
@@ -361,6 +391,8 @@ function Reveal() {
 
     const discussElement = document.getElementById('discuss');
     discussElement.style.display = 'none';
+
+    state.confirmBackMessage = null;
 }
 
 // -----------------------------------------------------------
@@ -368,7 +400,7 @@ function Reveal() {
 
 const routes = {
     home: 'index.html',
-    categories: 'categories.html',
+    topics: 'categories.html',
     howto: 'howto.html',
     setup: 'setup.html',
     game: 'game.html',
