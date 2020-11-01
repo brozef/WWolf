@@ -397,6 +397,7 @@ function TurnAction() {
         } else {
             state.turn++;
             phraseElement.innerText = '';
+            wolfElement.style.display = 'none';
             actionButton.innerText = 'Ready';
         }
     }
