@@ -334,8 +334,12 @@ function GetPhraseForLocalPlayer(localPlayerIndex) {
 }
 
 function TurnAction() {
-    if (state.game.turn > GetTotalPlayerCount()) {
-       //something to turn on discuss visuals
+    if (state.game.turn >= GetTotalPlayerCount()) {
+        const assignElement = document.getElementById('assignment');
+        assignElement.style.display = 'none';
+
+        const discussElement = document.getElementById('discuss');
+        discussElement.style.display = '';
     } else {
         const phraseElement = document.getElementById('phrase');
         const actionButton = document.getElementById('action-btn');
@@ -351,7 +355,13 @@ function TurnAction() {
 }
 
 //---- Debrief
-// set ganmestarted to false
+function Reveal() {
+    const debriefElement = document.getElementById('debrief');
+    debriefElement.style.display = '';
+
+    const discussElement = document.getElementById('discuss');
+    discussElement.style.display = 'none';
+}
 
 // -----------------------------------------------------------
 // PAGE NAVIGATION
