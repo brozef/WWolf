@@ -201,7 +201,7 @@ function AdjustLocalPlayerCount(adjustment) {
     UpdateLocalPlayerCount();
 }
 
-function UpdateLocalPlayerCount() {
+function UpdateLocalPlayerCount(useState = false) {
     let localPlayerCountInput = document.getElementById('localPlayerCount');
 
     let newInputCount = Number(localPlayerCountInput.value);
@@ -219,6 +219,11 @@ function UpdateLocalPlayerCount() {
     }
 
     const currentCount = GetLocalPlayerCount();
+
+    if (useState) {
+        newInputCount = currentCount;
+    }
+
     for (let i = 0; i < Math.abs(currentCount - newInputCount); i++) {
         if (currentCount > newInputCount) {
             RemoveLocalPlayer();
@@ -374,6 +379,8 @@ function NavigateBack() {
     Navigate('back');
 }
 
-window.onunload = function(event) {
-    save_state();
-};
+window.onpagehide = event => {
+    if (event.persisted) {
+        save_state();
+    }
+}
