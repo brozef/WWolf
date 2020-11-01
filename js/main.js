@@ -379,6 +379,21 @@ function NavigateBack() {
     Navigate('back');
 }
 
+function ConfirmBackNavigation() {
+    window.history.pushState({type: 'confirmation'}, document.title);
+}
+
+window.onpopstate = event => {
+    console.log(event);
+    if (event.state.type == 'confirmation') {
+        if (confirm('are you sure?')) {
+            NavigateBack();
+        } else {
+            ConfirmBackNavigation();
+        }
+    }
+}
+
 window.onpagehide = event => {
     if (event.persisted) {
         save_state();

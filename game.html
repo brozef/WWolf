@@ -37,10 +37,7 @@
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
             AssignPhrases();
-            window.onbeforeunload = function(event) {
-                event.preventDefault();
-                event.returnValue = 'Are you sure you want to exit this round?';
-            };
+            ConfirmBackNavigation();
         </script>
     </body>
 </html>
