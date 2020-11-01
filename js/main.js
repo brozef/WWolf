@@ -390,22 +390,19 @@ function NavigateBack() {
 }
 
 function ConfirmBackNavigation(message) {
-    window.history.replaceState({confirm: message}, document.title);
-    window.history.pushState({}, document.title);
+    state.confirmBackMessage = message;
 }
 
-window.onpopstate = event => {
-    if (event.state.confirm) {
-        if (confirm(event.state.confirm)) {
-            NavigateBack();
-        } else {
-            ConfirmBackNavigation();
-        }
+window.onbeforeunload = event => {
+    if (state.confirmBackMessage) {
+        event.preventDefault();
+        return state.confirmBackMessage;
     }
 }
 
 window.onpagehide = event => {
     if (event.persisted) {
+        state.confirmBackMessage = null;
         save_state();
     }
 }
