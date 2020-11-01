@@ -29,7 +29,7 @@ let state = {
 };
 
 function load_state() {
-    const savedJson = window.sessionStorage.getItem('state');
+    let savedJson = window.sessionStorage.getItem('state');
     if (savedJson) {
         let savedState = JSON.parse(savedJson);
         if (state.version == savedState.version) {
@@ -37,11 +37,16 @@ function load_state() {
         } else {
             // conversion ?
         }
+    } else {
+        savedJson = window.localStorage.getItem('state');
+        let savedState = JSON.parse(savedJson);
+        state = { ...state, ...savedState };
     }
 }
 
 function save_state() {
     window.sessionStorage.setItem('state', JSON.stringify(state));
+    window.localStorage.setItem('state', JSON.stringify({ options: state.options }));
 }
 
 load_state();
