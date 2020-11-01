@@ -8,9 +8,10 @@ Math.clamp = function(value, min = 0, max = 1) {
 // STATE
 
 let state = {
-    version: '1.0.5',
+    version: '1.0.6',
     selectedTopics: [],
     options: {
+        wolvesKnow: false,
         wolvesAreUnique: false,
         wolfCount: 1,
         nsfw: false
@@ -46,7 +47,10 @@ function load_state() {
 
 function save_state() {
     window.sessionStorage.setItem('state', JSON.stringify(state));
-    window.localStorage.setItem('state', JSON.stringify({ options: state.options }));
+    window.localStorage.setItem('state', JSON.stringify({ 
+        options: state.options, 
+        selectedTopics : state.selectedTopics 
+    }));
 }
 
 load_state();
@@ -396,6 +400,17 @@ function Reveal() {
 
     const discussElement = document.getElementById('discuss');
     discussElement.style.display = 'none';
+
+    const phraseElement = document.getElementById('sheep');
+    phraseElement.innerText = PhraseIndexToText(state.topic, state.subcategory, state.phrases[0]);
+
+    const wolvesElement = document.getElementById('wolves');
+
+    for(let i = 1; i < state.phrases.length; i++) {
+        let wolf = document.createElement('li');
+        wolf.innerText = PhraseIndexToText(state.topic, state.subcategory, state.phrases[i]);
+        wolvesElement.appendChild(wolf);
+    }
 
     state.confirmBackMessage = null;
 }
