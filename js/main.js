@@ -163,6 +163,7 @@ function FillTopicList() {
 }
 
 //---- Setup
+
 function UpdateOptions() {
     if (state.selectedTopics.length == 0) {
         Navigate('topics');
@@ -174,7 +175,9 @@ function UpdateOptions() {
     const nswfElement = document.getElementById('nsfw');
     const wolvesKnowElement = document.getElementById('wolves-know');
     const uniqueWolvesElement = document.getElementById('unique-wolves');
+    const wolfCountElement = document.getElementById('wolf-count');
 
+    state.options.wolfCount = wolfCountElement.value;
     state.options.wolvesAreUnique = uniqueWolvesElement.checked;
     state.options.wolvesKnow = wolvesKnowElement.checked;
     state.options.nsfw = nswfElement.checked;
@@ -192,6 +195,12 @@ function LoadOptions() {
     nswfElement.checked = state.options.nsfw;
     wolvesKnowElement.checked = state.options.wolvesKnow;
     uniqueWolvesElement.checked = state.options.wolvesAreUnique;
+}
+
+function AdjustWolfCount(adjustment) {
+    const wolfCountInput = document.getElementById('wolf-count');
+    wolfCountInput.value = '' + (state.options.wolfCount + adjustment);
+    UpdateOptions();
 }
 
 function GetRemotePlayerCount() {
@@ -401,7 +410,7 @@ function Reveal() {
     const discussElement = document.getElementById('discuss');
     discussElement.style.display = 'none';
 
-    const phraseElement = document.getElementById('sheep');
+    const phraseElement = document.getElementById('villagers');
     phraseElement.innerText = PhraseIndexToText(state.topic, state.subcategory, state.phrases[0]);
 
     const wolvesElement = document.getElementById('wolves');
