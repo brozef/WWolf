@@ -287,6 +287,8 @@ function AssignPhrases() {
         state.game.wolves.push(wolfIndex);
     }
 
+    state.game.turn = 0;
+
     save_state();
 }
 
