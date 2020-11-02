@@ -312,7 +312,7 @@ function AssignPhrases() {
     state.wolves = [];
     
     //if phrase count > 2 then each wolf has its own phrase
-    let phraseCount = state.options.wolvesAreUnique ? state.options.wolfCount : 2;
+    let phraseCount = state.options.wolvesAreUnique ? state.options.wolfCount + 1 : 2;
     for(let i = 0; i < phraseCount; i++) {
         let phraseIndex = -1;
         while (phraseIndex < 0 || state.phrases.includes(phraseIndex)) {
