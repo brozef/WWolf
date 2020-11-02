@@ -175,10 +175,20 @@ function UpdateOptions() {
     const uniqueWolvesElement = document.getElementById('unique-wolves');
     const wolfCountElement = document.getElementById('wolf-count');
 
-    state.options.wolfCount = Number(wolfCountElement.value);
+    state.options.wolfCount = Math.max(Number(wolfCountElement.value), 1);
     state.options.wolvesAreUnique = uniqueWolvesElement.checked;
     state.options.wolvesKnow = wolvesKnowElement.checked;
     state.options.nsfw = nswfElement.checked;
+
+    wolfCountElement.value = state.options.wolfCount;
+
+    // disable decrement if we are at min wolves
+    if (state.options.wolfCount == 1) {
+        document.getElementById('wolfCountDecrement').disabled = true;
+    } else {
+
+        document.getElementById('wolfCountDecrement').disabled = false;
+    }
 
     state.devices[0].host = true;
 
@@ -195,6 +205,8 @@ function LoadOptions() {
     nswfElement.checked = state.options.nsfw;
     wolvesKnowElement.checked = state.options.wolvesKnow;
     uniqueWolvesElement.checked = state.options.wolvesAreUnique;
+
+    UpdateOptions();
 }
 
 function AdjustWolfCount(adjustment) {
@@ -271,7 +283,9 @@ function UpdateLocalPlayerCount(useState = false) {
 
     // disable decrement if we are at min TOTAL players
     if (GetTotalPlayerCount() <= 3) {
-        document.getElementById('localPlayerCountDecrement').style.display = 'disabled';
+        document.getElementById('localPlayerCountDecrement').disabled = true;
+    } else {
+        document.getElementById('localPlayerCountDecrement').disabled = false;
     }
 }
 
