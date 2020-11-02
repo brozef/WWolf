@@ -48,9 +48,9 @@
                     <button class="btn" onclick="Reveal()">Reveal</button>
                 </section>
             </div>
-            <div id="debrief" style="display: none;">
+            <div id="reveal" style="display: none;">
                 <section>
-                    <h1>Debrief</h1>
+                    <h1>Reveal</h1>
                     <h3>Villagers</h3>
                     <p id="villagers"></p>
 
@@ -70,6 +70,7 @@
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript">
             AssignPhrases();
+            TurnAction();
             ConfirmBackNavigation('Exiting round; are you sure?');
         </script>
     </body>

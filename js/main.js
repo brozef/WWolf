@@ -8,7 +8,7 @@ Math.clamp = function(value, min = 0, max = 1) {
 // STATE
 
 let state = {
-    version: '1.0.6',
+    version: '1.0.7',
     selectedTopics: [],
     options: {
         wolvesKnow: false,
@@ -16,17 +16,15 @@ let state = {
         wolfCount: 1,
         nsfw: false
     },
-    devices: {
-        local: {
-            host: false,
-            players: []
-        }
-    },
+    devices: [{
+        host: false,
+        players: []
+    }],
     wolves: [],
     phrases: [],
     topic: null,
     subcategory: null,
-    turn: 0
+    turn: -1
 };
 
 function load_state() {
@@ -182,7 +180,7 @@ function UpdateOptions() {
     state.options.wolvesKnow = wolvesKnowElement.checked;
     state.options.nsfw = nswfElement.checked;
 
-    state.devices.local.host = true;
+    state.devices[0].host = true;
 
     save_state();
 }
@@ -208,7 +206,7 @@ function GetRemotePlayerCount() {
 }
 
 function GetLocalPlayerCount() {
-    return state.devices.local.players.length;
+    return state.devices[0].players.length;
 }
 
 function GetTotalPlayerCount() {
@@ -217,7 +215,7 @@ function GetTotalPlayerCount() {
 
 function AddLocalPlayer() {
     const localPlayerCount = GetLocalPlayerCount();
-    state.devices.local.players.push({ name: 'Player ' + localPlayerCount + 1});
+    state.devices[0].players.push({ name: 'Player ' + (localPlayerCount + 1)});
 
     save_state();
 }
@@ -226,9 +224,9 @@ function RemoveLocalPlayer(index = -1) {
     const totalPlayerCount = GetTotalPlayerCount();
 
     if (index < 0) {
-        state.devices.local.players.pop();
+        state.devices[0].players.pop();
     } else if (GetLocalPlayerCount() > index) {
-        state.devices.local.players.splice(index, 1);
+        state.devices[0].players.splice(index, 1);
     }
 
     save_state();
@@ -252,7 +250,7 @@ function UpdateLocalPlayerCount(useState = false) {
     }
 
     // limit total players to min of 3
-    if (state.devices.local.host) {
+    if (state.devices[0].host) {
         const remoteCount = GetRemotePlayerCount();
         if (remoteCount + newInputCount < 3) {
             newInputCount = 3 - remoteCount;
@@ -333,7 +331,7 @@ function AssignPhrases() {
         state.wolves.push(wolfIndex);
     }
 
-    state.turn = 0;
+    state.turn = -1;
 
     save_state();
 }
@@ -377,35 +375,55 @@ function GetPhraseForLocalPlayer(localPlayerIndex) {
     }
 }
 
+function GetPlayerNameFromIndex(playerIndex) {
+    let subtractor = 0;
+    for (let i = 0; i < state.devices.length; i++){
+        const index = playerIndex - subtractor;
+        if (state.devices[i].players.length > index) {
+            return state.devices[i].players[index].name;
+        } else {
+            subtractor += state.devices[i].players.length;
+        }
+    }
+
+    return 'Unknown Player';
+}
+
 function TurnAction() {
+    const nameElement = document.getElementById('player-name');
+    const phraseElement = document.getElementById('phrase');
+    const actionButton = document.getElementById('action-btn');
+    const wolfElement = document.getElementById('wolf');
+    if (phraseElement.innerText == '' && state.turn > -1) {
+        phraseElement.innerText = GetPhraseForLocalPlayer(state.turn);
+        if (state.options.wolvesKnow && IsLocalPlayerWolf(state.turn)){
+            wolfElement.style.display = '';
+        }
+        actionButton.innerText = 'Ok';
+    } else {
+        state.turn++;
+        nameElement.innerText = GetPlayerNameFromIndex(state.turn);
+        phraseElement.innerText = '';
+        wolfElement.style.display = 'none';
+        actionButton.innerText = 'Ready';
+    }
+    
     if (state.turn >= GetTotalPlayerCount()) {
         const assignElement = document.getElementById('assignment');
         assignElement.style.display = 'none';
 
         const discussElement = document.getElementById('discuss');
         discussElement.style.display = '';
-    } else {
-        const phraseElement = document.getElementById('phrase');
-        const actionButton = document.getElementById('action-btn');
-        const wolfElement = document.getElementById('wolf');
-        if (phraseElement.innerText == '') {
-            phraseElement.innerText = GetPhraseForLocalPlayer(state.turn);
-            if (state.options.wolvesKnow && IsLocalPlayerWolf(state.turn)){
-                wolfElement.style.display = '';
-            }
-            actionButton.innerText = 'Ok';
-        } else {
-            state.turn++;
-            phraseElement.innerText = '';
-            wolfElement.style.display = 'none';
-            actionButton.innerText = 'Ready';
-        }
     }
 }
 
 //---- Debrief
 function Reveal() {
-    const debriefElement = document.getElementById('debrief');
+    if (!confirm('Reveal the wolves?')) {
+        return;
+    }
+
+    const debriefElement = document.getElementById('reveal');
     debriefElement.style.display = '';
 
     const discussElement = document.getElementById('discuss');
@@ -417,9 +435,23 @@ function Reveal() {
     const wolvesElement = document.getElementById('wolves');
 
     for(let i = 1; i < state.phrases.length; i++) {
-        let wolf = document.createElement('li');
-        wolf.innerText = PhraseIndexToText(state.topic, state.subcategory, state.phrases[i]);
-        wolvesElement.appendChild(wolf);
+        let text = PhraseIndexToText(state.topic, state.subcategory, state.phrases[i]) + ' (';
+        if (!state.options.wolvesAreUnique) {
+            state.wolves.forEach((wolfPlayerIndex, index) => {
+                if (index > 0) {
+                    text += ', ';
+                }
+
+                text += GetPlayerNameFromIndex(wolfPlayerIndex);
+            });
+        } else {
+            text += GetPlayerNameFromIndex(i - 1);
+        }
+        text += ')';
+
+        let wolfPhrase = document.createElement('li');
+        wolfPhrase.innerText = text;
+        wolvesElement.appendChild(wolfPhrase);
     }
 
     state.confirmBackMessage = null;
