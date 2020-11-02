@@ -189,7 +189,9 @@ function LoadOptions() {
     const nswfElement = document.getElementById('nsfw');
     const wolvesKnowElement = document.getElementById('wolves-know');
     const uniqueWolvesElement = document.getElementById('unique-wolves');
+    const wolfCountElement = document.getElementById('wolf-count');
 
+    wolfCountElement.value = state.options.wolfCount;
     nswfElement.checked = state.options.nsfw;
     wolvesKnowElement.checked = state.options.wolvesKnow;
     uniqueWolvesElement.checked = state.options.wolvesAreUnique;
