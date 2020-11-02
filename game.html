@@ -24,29 +24,45 @@
     </head>
     <body class="game">
         <main>
-            <section id="assignment">
-                <h1 id="heading">Assignment</h1>
-                <h2 id="player-name">Player Name</h2>
+            <div id="assignment">
+                <section>
+                    <h1 id="heading">Assignment</h1>
+                    <h2 id="player-name">Player Name</h2>
+                    <p id="phrase"></p>
+                    <p id='wolf' style="display:none">Careful, you're a wolf!</p>
+                </section>
                 <div class="separator"></div>
-                <p id="phrase"></p>
-                <p id='wolf' style="display:none">Careful, you're a wolf!</p>
-                <button id="action-btn" class="btn" onclick="TurnAction()">Ready</button>
-            </section>
-            <section id="discuss" style="display: none;">
-                <h1>Discuss</h1>
-                <p>Allow everyone to talk about their phrase without revealing what it is.</p>
-                <p>Ask any suspicious people questions. Vote to find the wolves among you.</p>
-                <p>Reveal the wolves when you are ready.</p>
-                <button class="btn" onclick="Reveal()">Reveal</button>
-            </section>
-            <section id="debrief" style="display: none;">
-                <h1>Debrief</h1>
-                <h3>Villagers</h3>
-                <p id="villagers"></p>
+                <section id="calltoaction" class="calltoaction">
+                    <button id="action-btn" class="btn" onclick="TurnAction()">Ready</button>
+                </section>
+            </div>
+            <div id="discuss" style="display: none;">
+                <section>
+                    <h1>Discuss</h1>
+                    <p>Allow everyone to talk about their phrase without revealing what it is.</p>
+                    <p>Ask any suspicious people questions. Vote to find the wolves among you.</p>
+                    <p>Reveal the wolves when you are ready.</p>
+                </section>
+                <div class="separator"></div>
+                <section class="calltoaction">
+                    <button class="btn" onclick="Reveal()">Reveal</button>
+                </section>
+            </div>
+            <div id="debrief" style="display: none;">
+                <section>
+                    <h1>Debrief</h1>
+                    <h3>Villagers</h3>
+                    <p id="villagers"></p>
 
-                <h3>Wolves</h3>
-                <ul id="wolves"></ul>
-            </section>
+                    <h3>Wolves</h3>
+                    <ul id="wolves"></ul>
+                </section>
+                <div class="separator"></div>
+                <section class="calltoaction">
+                    <button class="btn small" onclick="Navigate('topics')">Change Settings</button>
+                    <button class="btn small" onclick="window.location.reload()">Play Again</button>
+                </section>
+            </div>
         </main>
         <footer>
             MOJO LABS 2020

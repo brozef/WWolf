@@ -75,6 +75,10 @@ section.calltoaction {
     justify-content: center;
 }
 
+section.calltoaction button {
+    margin: 0 30px;
+}
+
 .theme-icon {
     background-image: var(--theme-icon);
     background-size: 20px 20px;
@@ -235,12 +239,25 @@ section.calltoaction {
     mask-image: url("data:image/svg+xml,<svg viewBox='0 0 16 16' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path d='M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z'/></svg>");
 }
 
-.lobby main {
-    width: unset;
+.game main {
     margin: 50px auto 50px auto;
     flex-direction: column;
     align-items: center;
     display: flex;
+}
+
+.game main > div {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.game main > div section:first-child {
+    flex-grow: 1;
+}
+
+.game main h1 {
+    text-align: center;
 }
 
  /* The switch - the box around the slider */
@@ -310,3 +327,4 @@ section.calltoaction {
   .slider.round:before {
     border-radius: 50%;
   } 
+
