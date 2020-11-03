@@ -185,7 +185,7 @@ function UpdateOptions() {
     const uniqueWolvesElement = document.getElementById('unique-wolves');
     const wolfCountElement = document.getElementById('wolf-count');
 
-    const maxWolves = Math.floor(GetTotalPlayerCount() / 2);
+    const maxWolves = Math.floor(GetTotalPlayerCount() / 2) - 1;
 
     state.options.wolfCount = Math.clamp(Number(wolfCountElement.value), 1, maxWolves);
     state.options.wolvesAreUnique = uniqueWolvesElement.checked;
@@ -320,7 +320,7 @@ function AssignPhrases() {
         return;
     }
 
-    if (state.options.wolfCount > totalPlayerCount / 2) {
+    if (state.options.wolfCount >= totalPlayerCount / 2) {
         console.error('AssignPhrases', 'Too many wolves');
         return;
     }
