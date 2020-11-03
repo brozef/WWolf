@@ -169,6 +169,7 @@ input[type=text], input[type=number] {
     text-transform:uppercase;
     font-weight: 800;
     transition: 0.15s;
+    -webkit-tap-highlight-color: none;
 }
 
 .btn.small {
