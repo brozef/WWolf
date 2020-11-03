@@ -30,46 +30,48 @@
         </header>
         <main>
             <section>
-                <h2>Players</h2>
-                <label class="increment">
-                    <input id="localPlayerCount" type="number" value="3"  onchange="UpdateLocalPlayerCount()"/>
-                    <button id="localPlayerCountDecrement" class="btn" onclick="AdjustLocalPlayerCount(-1)">-</button>
-                    <button class="btn" onclick="AdjustLocalPlayerCount(1)">+</button>
-                </label>
-            </section>
-
-            <section>
-                <h2>Wolf Count</h2>
-                <label class="increment">
-                    <input id="wolf-count" type="number" value="1" onchange="UpdateOptions()"/>
-                    <button id="wolfCountDecrement" class="btn" onclick="AdjustWolfCount(-1)">-</button>
-                    <button onclick="AdjustWolfCount(1)" class="btn">+</button>
-                </label>
+                <div>
+                    <h2>Players</h2>
+                    <label class="increment">
+                        <input id="localPlayerCount" type="number" value="3"  onchange="UpdateLocalPlayerCount()"/>
+                        <button id="localPlayerCountDecrement" class="btn" onclick="AdjustLocalPlayerCount(-1)">-</button>
+                        <button class="btn" onclick="AdjustLocalPlayerCount(1)">+</button>
+                    </label>
+                </div>
+                <div>
+                    <h2>Wolf Count</h2>
+                    <label class="increment">
+                        <input id="wolf-count" type="number" value="1" onchange="UpdateOptions()"/>
+                        <button id="wolfCountDecrement" class="btn" onclick="AdjustWolfCount(-1)">-</button>
+                        <button onclick="AdjustWolfCount(1)" class="btn">+</button>
+                    </label>
+                </div>
             </section>
             
             <section>
-                <h2>Options</h2>
-
-                <div class="switch-container">
-                    NSFW
-                    <label class="switch">
-                        <input type="checkbox" id="nsfw" onchange="UpdateOptions()">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="switch-container">
-                    Wolves Know
-                    <label class="switch">
-                        <input type="checkbox" id="wolves-know" onchange="UpdateOptions()">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-                <div class="switch-container">
-                    Unique Wolves
-                    <label class="switch" >
-                        <input type="checkbox" id="unique-wolves" onchange="UpdateOptions()">
-                        <span class="slider round"></span>
-                    </label>
+                <div>
+                    <h2>Options</h2>
+                    <div class="switch-container">
+                        NSFW
+                        <label class="switch">
+                            <input type="checkbox" id="nsfw" onchange="UpdateOptions()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="switch-container">
+                        Wolves Know
+                        <label class="switch">
+                            <input type="checkbox" id="wolves-know" onchange="UpdateOptions()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="switch-container">
+                        Unique Wolves
+                        <label class="switch" >
+                            <input type="checkbox" id="unique-wolves" onchange="UpdateOptions()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
                 </div>
             </section>
 
