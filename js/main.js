@@ -185,7 +185,7 @@ function UpdateOptions() {
     const uniqueWolvesElement = document.getElementById('unique-wolves');
     const wolfCountElement = document.getElementById('wolf-count');
 
-    const maxWolves = Math.floor(GetTotalPlayerCount() / 2) - 1;
+    const maxWolves = Math.ceil(GetTotalPlayerCount() / 2) - 1;
 
     state.options.wolfCount = Math.clamp(Number(wolfCountElement.value), 1, maxWolves);
     state.options.wolvesAreUnique = uniqueWolvesElement.checked;
