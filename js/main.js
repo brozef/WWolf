@@ -8,7 +8,7 @@ Math.clamp = function(value, min = 0, max = 1) {
 // STATE
 
 let state = {
-    version: '1.0.7',
+    version: '1.0.9',
     selectedTopics: [],
     options: {
         wolvesKnow: false,
@@ -39,13 +39,18 @@ function load_state() {
     } else {
         savedJson = window.localStorage.getItem('state');
         let savedState = JSON.parse(savedJson);
-        state = { ...state, ...savedState };
+        if (state.version == savedState.version) {
+            state = { ...state, ...savedState };
+        } else {
+            // conversion ?
+        }
     }
 }
 
 function save_state() {
     window.sessionStorage.setItem('state', JSON.stringify(state));
     window.localStorage.setItem('state', JSON.stringify({ 
+        version: state.version,
         options: state.options, 
         selectedTopics : state.selectedTopics 
     }));
@@ -89,18 +94,19 @@ const topics = [
 ];
 
 function SelectTopic(topic, deselect = false) {
-    const index = state.selectedTopics.indexOf(topic);
-    const name = topics[topic];
-    let topicCheckbox = document.getElementById(name);
-    if (index < 0 && !deselect) {
-        state.selectedTopics.push(topic);
-        if (topicCheckbox) {
-            topicCheckbox.checked = true;
-        }
-    } else if (index > -1 && deselect) {
-        state.selectedTopics.splice(index, 1);
-        if (topicCheckbox) {
-            topicCheckbox.checked = false;
+    if (topics[topic] != null) {
+        const selected = state.selectedTopics.indexOf(topic);
+        let topicCheckbox = document.getElementById(topics[topic].name);
+        if (selected < 0 && !deselect) {
+            state.selectedTopics.push(topic);
+            if (topicCheckbox) {
+                topicCheckbox.checked = true;
+            }
+        } else if (selected > -1 && deselect) {
+            state.selectedTopics.splice(selected, 1);
+            if (topicCheckbox) {
+                topicCheckbox.checked = false;
+            }
         }
     }
     
@@ -130,7 +136,7 @@ function DeselectAllTopics() {
 }
 
 function FillTopicList() {
-    SelectTopic(null, true);
+    SelectTopic(-1, true);
 
     let topicListElement = document.getElementById('topic-list');
     if (topicListElement) {
