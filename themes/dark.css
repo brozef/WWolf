@@ -10,10 +10,6 @@
     --link-color: rgb(240, 240, 240);
     --link-inverse-color:rgb(132, 224, 255);
 
-    --primary-color: transparent;
-    --primary-inverse-color: rgb(132, 224, 255);
-
-    --primary-alt-color:rgb(132, 224, 255);
-
-    --primary-highlight-color: white;
+    --primary-color: rgb(132, 224, 255);
+    --primary-inverse-color: white;
 }

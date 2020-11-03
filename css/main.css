@@ -135,7 +135,7 @@ input[type=text], input[type=number] {
     min-width: 0;
     min-height: 0;
     border-radius: 0;
-    font-size: 30px;
+    font-size: 10px;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 40px;
     padding: 0;
@@ -143,10 +143,14 @@ input[type=text], input[type=number] {
 
 .increment button:first-of-type {
     left: 0;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .increment button:last-of-type {
     right: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .increment input {
@@ -167,12 +171,12 @@ a {
     box-sizing: border-box;
     cursor: pointer;
     border-radius: 5px;
-    border: 1px solid  var(--primary-inverse-color); /*trans*/ /*blue*/
+    border: 1px solid  var(--primary-color);
     padding: 15px;
     min-width: 300px;
     min-height: 40px;
-    background-color: var(--primary-color); /*blue*/ /*trans*/
-    color: var(--primary-alt-color); /*blue*/ /*white*/
+    background-color: transparent;
+    color: var(--primary-color);
     text-shadow: inherit;
     font-family: inherit;
     text-transform:uppercase;
@@ -186,9 +190,9 @@ a {
 }
 
 .btn:active:not(:disabled) {
-    background-color: var(--primary-inverse-color); /*trans*/ /*blue*/
-    color: var(--primary-highlight-color); /*blue*/ /*white*/
-    border: 1px solid var(--primary-color); /*blue*/ /*trans*/
+    background-color: var(--primary-color);
+    color: var(--primary-inverse-color);
+    border: 1px solid var(--primary-color);
 }
 
 .btn.link {
@@ -284,7 +288,7 @@ a {
     height: calc(calc(100vw / 3) - 22px);
     max-width: 150px;
     max-height: 150px;
-    color: var(--primary-highlight-color);
+    color: var(--primary-color);
     border-radius: 5px;
     border: 1px solid var(--font-color);
     background-position: center;
