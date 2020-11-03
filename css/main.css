@@ -176,7 +176,7 @@ input[type=text], input[type=number] {
     min-height: 40px;
 }
 
-.btn:hover:not(:disabled), .btn:active:not(:disabled) {
+.btn:hover:not(:disabled, .link), .btn:active:not(:disabled, .link) {
     background-color: var(--primary-inverse-color); /*trans*/ /*blue*/
     color: var(--primary-highlight-color); /*blue*/ /*white*/
     border: 1px solid var(--primary-color); /*blue*/ /*trans*/
