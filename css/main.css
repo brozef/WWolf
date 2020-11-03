@@ -185,7 +185,7 @@ a {
     min-height: 40px;
 }
 
-.btn:hover:not(:disabled) {
+.btn:active:not(:disabled) {
     background-color: var(--primary-inverse-color); /*trans*/ /*blue*/
     color: var(--primary-highlight-color); /*blue*/ /*white*/
     border: 1px solid var(--primary-color); /*blue*/ /*trans*/
@@ -199,7 +199,7 @@ a {
     color: var(--link-color);
 }
 
-.btn.link:hover:not(.disabled) {
+.btn.link:active:not(.disabled) {
     opacity: 100%;
     color: var(--link-inverse-color); /* blue */ /* blue */
     background: none;
