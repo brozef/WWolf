@@ -38,11 +38,13 @@ function load_state() {
         }
     } else {
         savedJson = window.localStorage.getItem('state');
-        let savedState = JSON.parse(savedJson);
-        if (state.version == savedState.version) {
-            state = { ...state, ...savedState };
-        } else {
-            // conversion ?
+        if (savedJson) {
+            let savedState = JSON.parse(savedJson);
+            if (state.version == savedState.version) {
+                state = { ...state, ...savedState };
+            } else {
+                // conversion ?
+            }
         }
     }
 }
