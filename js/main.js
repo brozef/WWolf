@@ -57,8 +57,9 @@ load_state();
 // GAME
 
 //---- Topics
-const topics = {
-    space: {
+const topics = [
+    {
+        name: "space",
         icon: 'url("https://icons-for-free.com/iconfiles/png/512/astronomy+planet+science+space+icon-1320195089993574465.png")',
         subcategories: [
             {
@@ -71,7 +72,8 @@ const topics = {
             }
         ]
     },
-    nature: {
+    {
+        name: "nature",
         icon: 'url("https://image.flaticon.com/icons/png/128/2990/2990966.png")',
         subcategories: [
             {
@@ -84,12 +86,12 @@ const topics = {
             }
         ]
     }
-};
+];
 
 function SelectTopic(topic, deselect = false) {
     const index = state.selectedTopics.indexOf(topic);
-
-    let topicCheckbox = document.getElementById(topic);
+    const name = topics[topic];
+    let topicCheckbox = document.getElementById(name);
     if (index < 0 && !deselect) {
         state.selectedTopics.push(topic);
         if (topicCheckbox) {
@@ -115,14 +117,14 @@ function SelectTopic(topic, deselect = false) {
 
 function SelectAllTopics() {
     state.selectedTopics = [];
-    Object.keys(topics).forEach(key => {
-        SelectTopic(key);        
+    topics.forEach((item, index) => {
+        SelectTopic(index);        
     });
 }
 
 function DeselectAllTopics() {
-    Object.keys(topics).forEach(key => {
-        SelectTopic(key, true);  
+    topics.forEach((item, index) => {
+        SelectTopic(index, true);  
     });
     state.selectedTopics = [];
 }
@@ -134,24 +136,24 @@ function FillTopicList() {
     if (topicListElement) {
         topicListElement.innerHTML = '';
 
-        Object.keys(topics).forEach(key => {
+        topics.forEach((item, index) => {
             let topicElement = document.createElement('li');
             let topicCheckbox = document.createElement('input');
             let topicLabel = document.createElement('label');
 
-            topicElement.style.backgroundImage = topics[key].icon;
+            topicElement.style.backgroundImage = item.icon;
 
-            topicCheckbox.id = key;
+            topicCheckbox.id = item.name;
             topicCheckbox.type = 'checkbox';            
-            if (state.selectedTopics.includes(key)) {
+            if (state.selectedTopics.includes(index)) {
                 topicCheckbox.checked = true;
             }
             topicCheckbox.onchange = (e) => { 
-                e.target.checked ? SelectTopic(key) : SelectTopic(key, true);  
+                e.target.checked ? SelectTopic(index) : SelectTopic(index, true);  
             };
 
-            topicLabel.htmlFor = key;
-            topicLabel.innerText = key;
+            topicLabel.htmlFor = item.name;
+            topicLabel.innerText = item.name;
 
             topicElement.appendChild(topicCheckbox);
             topicElement.appendChild(topicLabel);
@@ -305,10 +307,10 @@ function AssignPhrases() {
     }
 
     const topicIndex = Math.floor(Math.random() * state.selectedTopics.length);
-    const topicName = state.selectedTopics[topicIndex];
-    const topic = topics[topicName];
+    const topicID = state.selectedTopics[topicIndex];
+    const topic = topics[topicID];
     if (topic == null || topic.subcategories == null || topic.subcategories.length == 0) {
-        console.error('AssignPhrases', 'Topic no subcategories', topicName);
+        console.error('AssignPhrases', 'Topic no subcategories', topic.name);
         return;
     } 
 
@@ -316,11 +318,11 @@ function AssignPhrases() {
     const subcategory = topic.subcategories[subcategoryIndex];
     
     if (subcategory.phrases == null || subcategory.phrases == null || subcategory.phrases.length < 2) {
-        console.error('AssignPhrases', 'Topic has incomplete subcategory', topicName, subcategory.name);
+        console.error('AssignPhrases', 'Topic has incomplete subcategory', topic.name, subcategory.name);
         return;
     }
 
-    state.topic = topicName;
+    state.topic = topicIndex;
     state.subcategory = subcategoryIndex;
     state.phrases = [];
     state.wolves = [];
