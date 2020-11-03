@@ -34,16 +34,16 @@
                     <h2>Players</h2>
                     <label class="increment">
                         <input id="localPlayerCount" type="number" value="3"  onchange="UpdateLocalPlayerCount()"/>
-                        <button id="localPlayerCountDecrement" class="btn" onclick="AdjustLocalPlayerCount(-1)">━</button>
-                        <button class="btn" onclick="AdjustLocalPlayerCount(1)">╋</button>
+                        <button id="localPlayerCountDecrement" class="btn inverse" onclick="AdjustLocalPlayerCount(-1)">━</button>
+                        <button class="btn inverse" onclick="AdjustLocalPlayerCount(1)">╋</button>
                     </label>
                 </div>
                 <div>
                     <h2>Wolf Count</h2>
                     <label class="increment">
                         <input id="wolf-count" type="number" value="1" onchange="UpdateOptions()"/>
-                        <button id="wolfCountDecrement" class="btn" onclick="AdjustWolfCount(-1)">━</button>
-                        <button onclick="AdjustWolfCount(1)" class="btn">╋</button>
+                        <button id="wolf-count-dec" class="btn inverse" onclick="AdjustWolfCount(-1)">━</button>
+                        <button id="wolf-count-inc" class="btn inverse" onclick="AdjustWolfCount(1)">╋</button>
                     </label>
                 </div>
             </section>

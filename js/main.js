@@ -185,7 +185,9 @@ function UpdateOptions() {
     const uniqueWolvesElement = document.getElementById('unique-wolves');
     const wolfCountElement = document.getElementById('wolf-count');
 
-    state.options.wolfCount = Math.max(Number(wolfCountElement.value), 1);
+    const maxWolves = Math.floor(GetTotalPlayerCount() / 2);
+
+    state.options.wolfCount = Math.clamp(Number(wolfCountElement.value), 1, maxWolves);
     state.options.wolvesAreUnique = uniqueWolvesElement.checked;
     state.options.wolvesKnow = wolvesKnowElement.checked;
     state.options.nsfw = nswfElement.checked;
@@ -194,10 +196,17 @@ function UpdateOptions() {
 
     // disable decrement if we are at min wolves
     if (state.options.wolfCount == 1) {
-        document.getElementById('wolfCountDecrement').disabled = true;
+        document.getElementById('wolf-count-dec').disabled = true;
     } else {
 
-        document.getElementById('wolfCountDecrement').disabled = false;
+        document.getElementById('wolf-count-dec').disabled = false;
+    }
+
+    if (state.options.wolfCount >= maxWolves) {
+        document.getElementById('wolf-count-inc').disabled = true;
+    } else {
+
+        document.getElementById('wolf-count-inc').disabled = false;
     }
 
     state.devices[0].host = true;
@@ -297,6 +306,8 @@ function UpdateLocalPlayerCount(useState = false) {
     } else {
         document.getElementById('localPlayerCountDecrement').disabled = false;
     }
+
+    UpdateOptions();
 }
 
 //---- Assignments

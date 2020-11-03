@@ -184,6 +184,16 @@ a {
     transition: 0.15s;
 }
 
+.btn.inverse {
+    background-color: var(--primary-color);
+    color: var(--primary-inverse-color);
+}
+
+.btn.inverse:active:not(.disabled) {
+    background-color: transparent;
+    color: var(--primary-color);
+}
+
 .btn.small {
     min-width: 40px;
     min-height: 40px;
